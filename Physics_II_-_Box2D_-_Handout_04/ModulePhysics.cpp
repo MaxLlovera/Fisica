@@ -46,12 +46,12 @@ bool ModulePhysics::Start()
 
 	b2Body* big_ball = world->CreateBody(&body);
 
-	b2CircleShape shape;
+	/*b2CircleShape shape;
 	shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	big_ball->CreateFixture(&fixture);
+	big_ball->CreateFixture(&fixture);*/
 
 	return true;
 }
