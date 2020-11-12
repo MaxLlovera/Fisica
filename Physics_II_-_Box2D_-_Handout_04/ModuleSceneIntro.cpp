@@ -27,7 +27,7 @@ bool ModuleSceneIntro::Start()
 
 
 	//Backgound
-	//background = App->textures->Load("Assets/Sprites/background.png");
+	background = App->textures->Load("Assets/Sprites/background.png");
 
 
 	int background1[194] = {
@@ -384,7 +384,7 @@ bool ModuleSceneIntro::Start()
 	bckg.add(App->physics->CreateChain(0, 40, rebotblauD, 18));
 	bckg.add(App->physics->CreateChain(0, 40, rebotblauE, 20));
 
-
+	
 	//sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
 	return ret;

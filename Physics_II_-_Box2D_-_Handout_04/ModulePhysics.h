@@ -53,12 +53,13 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
-
+	PhysBody* CreateCircleStatic(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleStatic(int x, int y, int width, int height);
 
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
+	PhysBody* CreateChainDynamic(int x, int y, int* points, int size);
 	void CreateFlippers();
 
 	b2RevoluteJoint* CreateJoint(b2JointDef*);
@@ -75,6 +76,7 @@ public:
 	PhysBody* axisR = nullptr;
 	SDL_Texture* rTextFlip = nullptr;
 	SDL_Texture* lTextFlip = nullptr;
+
 private:
 
 	bool debug;
