@@ -220,12 +220,10 @@ void ModulePhysics::CreateFlippers()
 	//ESQUERRA
 	flipperL = CreateRectangle(195, 815,65, 15);
 	axisL = CreateRectangleStatic(170, 815, 5, 5);
-	//DRET
-	flipperR = CreateRectangle(285, 815, 65, 15);
-	axisR = CreateRectangleStatic(310, 815, 5, 5);
+	flipperJoint.bodyA = flipperL->body;
+	flipperJoint.bodyB = axisL->body;
 
-	//ESQUERRA
-	flipperJoint.Initialize(flipperL->body, axisL->body, axisL->body->GetWorldCenter());
+	flipperJoint.Initialize(flipperJoint.bodyA, flipperJoint.bodyB, flipperJoint.bodyB->GetWorldCenter());
 	flipperJoint.collideConnected = false;
 	flipperJoint.lowerAngle = DEGTORAD * -25;
 	flipperJoint.upperAngle = DEGTORAD * 65;
@@ -233,11 +231,16 @@ void ModulePhysics::CreateFlippers()
 	flipperJoint.maxMotorTorque = 50.0f;
 	flipperJoint.motorSpeed = 0.0f;
 	flipperJoint.enableMotor = true;
-	flipperJointL = (b2RevoluteJoint*)App->physics->world->CreateJoint(&flipperJoint);
 
-	
+	flipperJointL = (b2RevoluteJoint*)world->CreateJoint(&flipperJoint);
+
 	//DRET
-	flipperJoint.Initialize(flipperR->body, axisR->body, axisR->body->GetWorldCenter());
+	flipperR = CreateRectangle(285, 815, 65, 15);
+	axisR = CreateRectangleStatic(310, 815, 5, 5);
+	flipperJoint.bodyA = flipperR->body;
+	flipperJoint.bodyB = axisR->body;
+
+	flipperJoint.Initialize(flipperJoint.bodyA, flipperJoint.bodyB, flipperJoint.bodyB->GetWorldCenter());
 	flipperJoint.collideConnected = false;
 	flipperJoint.lowerAngle = DEGTORAD * -65;
 	flipperJoint.upperAngle = DEGTORAD * 25;
@@ -246,12 +249,8 @@ void ModulePhysics::CreateFlippers()
 	flipperJoint.motorSpeed = 0.0f;
 	flipperJoint.enableMotor = true;
 
-	flipperJointR = (b2RevoluteJoint*)App->physics->world->CreateJoint(&flipperJoint);
+	flipperJointR = (b2RevoluteJoint*)world->CreateJoint(&flipperJoint);
 
-}
-
-b2RevoluteJoint* ModulePhysics::CreateJoint(b2JointDef* jointDef) {
-	return (b2RevoluteJoint*)world->CreateJoint(jointDef);
 }
 
 update_status ModulePhysics::PostUpdate()
