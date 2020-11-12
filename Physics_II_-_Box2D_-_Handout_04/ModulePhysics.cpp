@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
 #include "p2Point.h"
+#include "ModuleSceneIntro.h"
 #include "math.h"
 
 #ifdef _DEBUG
@@ -83,6 +84,29 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+
+	return pbody;
+}
+PhysBody* ModulePhysics::CreateCircleStatic(int x, int y, int radius)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -219,10 +243,8 @@ void ModulePhysics::CreateFlippers()
 {
 	//ESQUERRA
 	flipperL = CreateRectangle(195, 815,65, 15);
-
-	axisL = CreateRectangleStatic(170, 815, 5, 5);
-
-
+	axisL = CreateCircleStatic(170, 815, 2);
+	//App->renderer->Blit(App->scene_intro->box, 195, 815,NULL , 1.0f);
 	flipperJoint.bodyA = flipperL->body;
 	flipperJoint.bodyB = axisL->body;
 
@@ -239,7 +261,7 @@ void ModulePhysics::CreateFlippers()
 
 	//DRET
 	flipperR = CreateRectangle(285, 815, 65, 15);
-	axisR = CreateRectangleStatic(310, 815, 5, 5);
+	axisR = CreateCircleStatic(310, 815, 2);
 	flipperJoint.bodyA = flipperR->body;
 	flipperJoint.bodyB = axisR->body;
 

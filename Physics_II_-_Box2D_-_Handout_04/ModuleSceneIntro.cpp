@@ -25,7 +25,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-
+	box = App->textures->Load("Assets/Sprites/crate.png");
 	//Backgound
 	background = App->textures->Load("Assets/Sprites/background.png");
 
@@ -431,6 +431,10 @@ update_status ModuleSceneIntro::Update()
 		App->physics->flipperJointR->SetMotorSpeed(30.0f);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 	{
