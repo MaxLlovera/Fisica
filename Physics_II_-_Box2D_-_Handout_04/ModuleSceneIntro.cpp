@@ -27,7 +27,7 @@ bool ModuleSceneIntro::Start()
 
 
 	//Backgound
-	background = App->textures->Load("Assets/Sprites/background.png");
+	//background = App->textures->Load("Assets/Sprites/background.png");
 
 
 	int background1[194] = {
@@ -173,44 +173,35 @@ bool ModuleSceneIntro::Start()
 		103, 435,
 		114, 450
 	};
-	int blauFlipperD[32] = {
-		411, 618,
-		408, 624,
-		408, 690,
-		396, 703,
-		363, 725,
-		336, 742,
-		311, 759,
-		316, 770,
-		320, 784,
-		346, 771,
-		380, 749,
-		413, 726,
-		418, 718,
-		419, 712,
-		419, 623,
-		416, 617
+	int blauFlipperD[26] = {
+		323, 783,
+		417, 722,
+		419, 622,
+		417, 617,
+		412, 617,
+		408, 621,
+		408, 689,
+		403, 697,
+		389, 709,
+		312, 760,
+		322, 756,
+		333, 768,
+		322, 782
 	};
-	int blauFlipperE[38] = {
-		60, 621,
-		60, 716,
-		66, 725,
-		80, 735,
-		96, 745,
-		110, 755,
-		127, 766,
-		143, 777,
-		157, 783,
-		167, 763,
-		153, 752,
-		130, 737,
-		110, 721,
-		91, 708,
-		76, 696,
+	int blauFlipperE[26] = {
+		63, 618,
+		68, 618,
+		71, 622,
 		71, 687,
-		71, 623,
-		69, 618,
-		63, 618
+		74, 693,
+		82, 702,
+		164, 758,
+		154, 754,
+		142, 767,
+		153, 777,
+		155, 782,
+		61, 720,
+		59, 622
 	};
 	int blaunoPlanta[42] = {
 		148, 198,
@@ -381,8 +372,8 @@ bool ModuleSceneIntro::Start()
 	bckg.add(App->physics->CreateChain(0, 40, background1, 194));
 	bckg.add(App->physics->CreateChain(0, 40, background_partSuperior, 34));
 	bckg.add(App->physics->CreateChain(0, 40, blauesquerraSup, 46));
-	bckg.add(App->physics->CreateChain(0, 40, blauFlipperD, 32));
-	bckg.add(App->physics->CreateChain(0, 40, blauFlipperE, 38));
+	bckg.add(App->physics->CreateChain(0, 40, blauFlipperD, 26));
+	bckg.add(App->physics->CreateChain(0, 40, blauFlipperE, 26));
 	bckg.add(App->physics->CreateChain(0, 40, blaunoPlanta, 42));
 	bckg.add(App->physics->CreateChain(0, 40, blauplanta, 92));
 	bckg.add(App->physics->CreateChain(0, 40, blausuperior1, 10));
@@ -422,6 +413,29 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		App->physics->flipperJointL->SetMotorSpeed(30.0f);
+	}
+	else
+	{
+		App->physics->flipperJointL->SetMotorSpeed(-30.0f);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		App->physics->flipperJointR->SetMotorSpeed(-30.0f);
+	}
+	else
+	{
+		App->physics->flipperJointR->SetMotorSpeed(30.0f);
+	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	{
+		App->physics->CreateCircle(200, 500, 10);
+	}
 
 	// Prepare for raycast ------------------------------------------------------
 	

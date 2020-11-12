@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Box2D/Box2D/Box2D.h"
+#include "Application.h"
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
@@ -11,6 +12,15 @@
 
 #define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
+
+struct Flipper {
+
+	PhysBody* flipper = nullptr;
+	PhysBody* axis = nullptr;
+	bool mov = false;
+
+	b2RevoluteJoint* Rjoint = nullptr;
+};
 
 // Small class to return to other modules to track position and rotation of physics bodies
 class PhysBody
@@ -43,17 +53,34 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
+
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
+	PhysBody* CreateRectangleStatic(int x, int y, int width, int height);
+
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
+	void CreateFlippers();
+
+	b2RevoluteJoint* CreateJoint(b2JointDef*);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
+	b2RevoluteJointDef flipperJoint;
+	b2RevoluteJoint* flipperJointL;
+	b2RevoluteJoint* flipperJointR;
+	PhysBody* flipperL = nullptr;
+	PhysBody* flipperR = nullptr;
+	PhysBody* axisL = nullptr;
+	PhysBody* axisR = nullptr;
+	SDL_Texture* rTextFlip = nullptr;
+	SDL_Texture* lTextFlip = nullptr;
 private:
 
 	bool debug;
 	b2World* world;
 	b2MouseJoint* mouse_joint;
 	b2Body* ground;
+
+
 };

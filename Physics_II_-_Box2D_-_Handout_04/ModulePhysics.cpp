@@ -45,7 +45,11 @@ bool ModulePhysics::Start()
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* big_ball = world->CreateBody(&body);
+	CreateFlippers();
+	//rTextFlip = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
+	//flipper_tx = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
 
+	
 	/*b2CircleShape shape;
 	shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
 
@@ -124,6 +128,31 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	return pbody;
 }
 
+PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int height)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	//fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = width * 0.5f;
+	pbody->height = height * 0.5f;
+
+	return pbody;
+}
+
 PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height)
 {
 	b2BodyDef body;
@@ -185,7 +214,46 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 	return pbody;
 }
 
-// 
+
+void ModulePhysics::CreateFlippers()
+{
+	//ESQUERRA
+	flipperL = CreateRectangle(195, 815,65, 15);
+	axisL = CreateRectangleStatic(170, 815, 5, 5);
+	//DRET
+	flipperR = CreateRectangle(285, 815, 65, 15);
+	axisR = CreateRectangleStatic(310, 815, 5, 5);
+
+	//ESQUERRA
+	flipperJoint.Initialize(flipperL->body, axisL->body, axisL->body->GetWorldCenter());
+	flipperJoint.collideConnected = false;
+	flipperJoint.lowerAngle = DEGTORAD * -25;
+	flipperJoint.upperAngle = DEGTORAD * 65;
+	flipperJoint.enableLimit = true;
+	flipperJoint.maxMotorTorque = 50.0f;
+	flipperJoint.motorSpeed = 0.0f;
+	flipperJoint.enableMotor = true;
+	flipperJointL = (b2RevoluteJoint*)App->physics->world->CreateJoint(&flipperJoint);
+
+	
+	//DRET
+	flipperJoint.Initialize(flipperR->body, axisR->body, axisR->body->GetWorldCenter());
+	flipperJoint.collideConnected = false;
+	flipperJoint.lowerAngle = DEGTORAD * -65;
+	flipperJoint.upperAngle = DEGTORAD * 25;
+	flipperJoint.enableLimit = true;
+	flipperJoint.maxMotorTorque = 50.0f;
+	flipperJoint.motorSpeed = 0.0f;
+	flipperJoint.enableMotor = true;
+
+	flipperJointR = (b2RevoluteJoint*)App->physics->world->CreateJoint(&flipperJoint);
+
+}
+
+b2RevoluteJoint* ModulePhysics::CreateJoint(b2JointDef* jointDef) {
+	return (b2RevoluteJoint*)world->CreateJoint(jointDef);
+}
+
 update_status ModulePhysics::PostUpdate()
 {
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
