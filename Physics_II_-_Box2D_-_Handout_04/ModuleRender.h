@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "SDL\include\SDL.h"
+
 class ModuleRender : public Module
 {
 public:

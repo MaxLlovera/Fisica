@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleAudio.h"
+#include "SDL\include\SDL.h"
+#include "SDL_mixer\include\SDL_mixer.h"
 
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
@@ -21,7 +23,8 @@ bool ModuleAudio::Init()
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
-		ret = false;
+		Disable();
+		return true; // Ugly patch for class computers without audio :(
 	}
 
 	// load support for the OGG format
@@ -38,7 +41,7 @@ bool ModuleAudio::Init()
 	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		ret = false;
+		ret = true;
 	}
 
 	return ret;
