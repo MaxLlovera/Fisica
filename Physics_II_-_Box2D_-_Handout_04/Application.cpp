@@ -7,6 +7,8 @@
 #include "ModuleAudio.h"
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
+#include "ModuleFadeToBlack.h"
+#include "ModuleInitialScene.h"
 #include "ModuleSceneIntro.h"
 
 #include "Application.h"
@@ -19,6 +21,8 @@ Application::Application()
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
 	player = new ModulePlayer(this);
+	fade_to_black = new ModuleFadeToBlack(this);
+	initial_scene = new ModuleInitialScene(this);
 	scene_intro = new ModuleSceneIntro(this);
 	physics = new ModulePhysics(this);
 
@@ -33,8 +37,9 @@ Application::Application()
 	AddModule(textures);
 	AddModule(input);
 	AddModule(audio);
-	
+	AddModule(fade_to_black);
 	// Scenes
+	AddModule(initial_scene);
 	AddModule(scene_intro);
 	
 	// Player
