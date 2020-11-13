@@ -25,7 +25,8 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	flipper_text = App->textures->Load("Assets/Sprites/crate.png");
+	flipperL_text = App->textures->Load("Assets/Sprites/FlipperL.png");
+	flipperR_text = App->textures->Load("Assets/Sprites/FlipperR.png");
 	//Backgound
 	background = App->textures->Load("Assets/Sprites/background.png");
 
@@ -445,13 +446,13 @@ update_status ModuleSceneIntro::Update()
 	{
 		int x, y;
 		App->physics->flipperL->GetPosition(x, y);
-		App->renderer->Blit(flipper_text, x, y, NULL, 1.0f, App->physics->flipperL->GetRotation());
+		App->renderer->Blit(flipperL_text, x, y, NULL, 1.0f, App->physics->flipperL->GetRotation());
 	}
 	if (App->physics->flipperR != NULL)
 	{
 		int x, y;
 		App->physics->flipperR->GetPosition(x, y);
-		App->renderer->Blit(flipper_text, x, y, NULL, 1.0f, App->physics->flipperR->GetRotation());
+		App->renderer->Blit(flipperR_text, x, y, NULL, 1.0f, App->physics->flipperR->GetRotation());
 	}
 	// Prepare for raycast ------------------------------------------------------
 	
