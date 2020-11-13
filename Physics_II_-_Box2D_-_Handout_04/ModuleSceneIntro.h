@@ -17,6 +17,8 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
+	void Restart();
+
 public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
@@ -44,6 +46,8 @@ public:
 	bool ray_on;
 
 	bool ball_in_game;
+
+	bool dead = false;
 
 
 };

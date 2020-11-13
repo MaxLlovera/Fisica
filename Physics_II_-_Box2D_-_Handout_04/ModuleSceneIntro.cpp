@@ -109,8 +109,8 @@ bool ModuleSceneIntro::Start()
 		162, 830,
 		166, 833,
 		168, 846,
-		168, 852,
-		308, 853,
+		168, 1500,
+		308, 1500,
 		312, 835,
 		413, 767,
 		438, 754,
@@ -410,6 +410,10 @@ bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	App->physics->Ball = nullptr;
+	Ball_tex = nullptr;
+
+
 	return true;
 }
 
@@ -486,6 +490,12 @@ update_status ModuleSceneIntro::Update()
 	}
 
 
+	//restart with F2
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		Restart();
+	}
+
 
 
 	// Prepare for raycast ------------------------------------------------------
@@ -518,11 +528,19 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	//Draw Ball
-	if (App->physics->Ball != NULL)
+	if (App->physics->Ball != NULL&&Ball_tex != nullptr)
 	{
 		int x, y;
 		App->physics->Ball->GetPosition(x,y);
 		App->renderer->Blit(Ball_tex, x-3, y-3, NULL, 1.0f, App->physics->Ball->GetRotation());
+
+		if (y - 3 >= SCREEN_HEIGHT) {
+			Restart();
+			ball_in_game = false;
+
+		}
+
+
 	}
 
 	//Draw Trigger
@@ -604,4 +622,24 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		bodyB->GetPosition(x, y);
 		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
 	}*/
+}
+
+
+void ModuleSceneIntro::Restart()
+{
+	//Canviar score i tal
+	
+	//CleanUp();
+	//App->physics->CreateBall();
+	/*
+	int x, y;
+	App->physics->Ball->GetPosition(x, y);
+	App->renderer->Blit(Ball_tex, x - 3, y - 3, NULL, 1.0f, App->physics->Ball->GetRotation());*/
+
+	App->physics->Ball = nullptr;
+	App->physics->Ball = App->physics->CreateCircle(500, 600, 10);
+
+
+	dead = false;
+
 }
