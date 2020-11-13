@@ -39,6 +39,8 @@ bool ModuleSceneIntro::Start()
 	{
 		App->audio->PlayMusic("Assets/Audio/game_music.ogg");
 	}
+	hitflipper_fx = App->audio->LoadFx("Assets/Audio/fliphit.wav");
+
 	//Backgound
 	background = App->textures->Load("Assets/Sprites/background.png");
 	
@@ -80,7 +82,7 @@ bool ModuleSceneIntro::Start()
 		53, 431,
 		62, 460,
 		72, 479,
-		86, 505,
+		92, 505,
 		76, 514,
 		74, 527,
 		93, 527,
@@ -450,6 +452,14 @@ update_status ModuleSceneIntro::Update()
 		App->physics->flipperJointR->SetMotorSpeed(30.0f);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	{
+		App->audio->PlayFx(hitflipper_fx, 0);
+	}
+
+
+
+
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
@@ -458,8 +468,6 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 	{
 		App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10);
-
-
 	}
 
 
