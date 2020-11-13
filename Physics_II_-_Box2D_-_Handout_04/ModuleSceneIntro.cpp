@@ -40,7 +40,8 @@ bool ModuleSceneIntro::Start()
 		App->audio->PlayMusic("Assets/Audio/game_music.ogg");
 	}
 	hitflipper_fx = App->audio->LoadFx("Assets/Audio/fliphit.wav");
-
+	spoink_fx = App->audio->LoadFx("Assets/Audio/spoink.wav");
+	death_fx = App->audio->LoadFx("Assets/Audio/death.wav");
 	//Backgound
 	background = App->textures->Load("Assets/Sprites/background.png");
 	
@@ -492,7 +493,7 @@ update_status ModuleSceneIntro::Update()
 				App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.95f), App->physics->Ball->body->GetLocalCenter(), true);
 
 			}
-
+			App->audio->PlayFx(spoink_fx, 0);
 			ball_in_game = true;
 		}
 	}
@@ -543,6 +544,7 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(Ball_tex, x-3, y-3, NULL, 1.0f, App->physics->Ball->GetRotation());
 
 		if (y - 3 >= SCREEN_HEIGHT) {
+			App->audio->PlayFx(death_fx, 0);
 			Restart();
 			ball_in_game = false;
 

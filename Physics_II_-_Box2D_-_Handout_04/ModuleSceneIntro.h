@@ -42,6 +42,8 @@ public:
 	SDL_Texture* box;
 	SDL_Texture* rick;
 	uint bonus_fx = 0;
+	uint spoink_fx = 0;
+	uint death_fx = 0;
 	uint hitflipper_fx = 0;
 	p2Point<int> ray;
 	bool ray_on;
