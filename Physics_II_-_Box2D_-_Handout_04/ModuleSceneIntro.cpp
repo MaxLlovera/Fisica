@@ -403,7 +403,8 @@ bool ModuleSceneIntro::Start()
 	bckg.add(App->physics->CreateChain(0, 40, rebotblauE, 20));
 
 	
-	//sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
+	sensor = App->physics->CreateRectangleSensor(500, 300, 40, 50);
+	score = 0;
 
 	return ret;
 }
@@ -611,14 +612,23 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	int x, y;
 
-	App->audio->PlayFx(bonus_fx);
+	bool xocat = false;
+	if (bodyA == sensor){
+		xocat = true;
+		score += 30;
+	}
+
+
+	/*int x, y;
+
+	App->audio->PlayFx(bonus_fx);*/
 
 	/*
 	if(bodyA)

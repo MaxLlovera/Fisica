@@ -51,6 +51,6 @@ public:
 	bool ball_in_game;
 
 	bool dead = false;
-
-
+	
+	int score;
 };
