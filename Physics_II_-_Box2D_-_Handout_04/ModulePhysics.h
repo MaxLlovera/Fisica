@@ -75,6 +75,7 @@ public:
 	PhysBody* axisL = nullptr;
 	PhysBody* axisR = nullptr;
 	PhysBody* Ball = nullptr;
+	PhysBody* Trigger = nullptr;
 	SDL_Texture* rTextFlip = nullptr;
 	SDL_Texture* lTextFlip = nullptr;
 
