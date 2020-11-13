@@ -32,6 +32,8 @@ public:
 
 	SDL_Texture* flipper_text;
 	SDL_Texture* Ball_tex;
+	SDL_Texture* Trigger_tex;
+	
 
 	SDL_Texture* background;
 	SDL_Texture* circle;
@@ -40,4 +42,8 @@ public:
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
+
+	bool ball_in_game;
+
+
 };

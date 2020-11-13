@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "ModuleSceneIntro.h"
 #include "math.h"
+#include "ModuleInitialScene.h"
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -47,6 +48,8 @@ bool ModulePhysics::Start()
 
 	b2Body* big_ball = world->CreateBody(&body);
 	CreateFlippers();
+	CreateBall();
+	CreateTrigger();
 	//rTextFlip = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
 	//flipper_tx = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
 
@@ -61,7 +64,7 @@ bool ModulePhysics::Start()
 	return true;
 }
 
-// 
+
 update_status ModulePhysics::PreUpdate()
 {
 	world->Step(1.0f / 60.0f, 6, 2);
@@ -278,14 +281,25 @@ void ModulePhysics::CreateFlippers()
 	flipperJointR = (b2RevoluteJoint*)world->CreateJoint(&flipperJoint);
 
 
-	//BALL
-	Ball = CreateCircle(500, 600, 10);
 
 
-	//TRIGGER
-	Trigger = CreateRectangleStatic(500,740,30,50);
+
+	
 
 }
+
+void ModulePhysics::CreateBall()
+{
+	//BALL
+	Ball = CreateCircle(500, 600, 10);
+}
+
+void ModulePhysics::CreateTrigger()
+{
+	//TRIGGER
+	Trigger = CreateRectangleStatic(499, 855, 30, 90);
+}
+
 
 update_status ModulePhysics::PostUpdate()
 {

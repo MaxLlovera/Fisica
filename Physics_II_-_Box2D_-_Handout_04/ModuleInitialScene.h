@@ -22,8 +22,10 @@ public:
 
 	bool CleanUp() override;
 
+
 private:
 
 	SDL_Texture* introText = nullptr;
+
 
 };

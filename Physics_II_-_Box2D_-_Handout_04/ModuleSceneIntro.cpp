@@ -6,6 +6,10 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModuleInitialScene.h"
+
+#include <stdio.h>
+#include <time.h>
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -30,10 +34,13 @@ bool ModuleSceneIntro::Start()
 
 	flipper_text = App->textures->Load("Assets/Sprites/crate.png");
 	Ball_tex = App->textures->Load("Assets/Sprites/ball.png");
+	Trigger_tex = App->textures->Load("Assets/Sprites/spoink.png");
 
 	//Backgound
 	background = App->textures->Load("Assets/Sprites/background.png");
-
+	
+	//trigger
+	ball_in_game = false;
 
 	int background1[194] = {
 		520, 831,
@@ -449,6 +456,34 @@ update_status ModuleSceneIntro::Update()
 	}
 
 
+	//Trigger
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP&&!ball_in_game)
+	{
+		int x, y;
+		App->physics->Ball->GetPosition(x, y);
+
+		if (y > 690) {
+			srand(time(NULL));
+			int random = rand() % 100;
+			if (random <= 33) {
+				App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.75f), App->physics->Ball->body->GetLocalCenter(), true);
+			}
+			else if(random <=66)
+			{
+				App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -2.5f), App->physics->Ball->body->GetLocalCenter(), true);
+			}
+			else
+			{
+				App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.95f), App->physics->Ball->body->GetLocalCenter(), true);
+
+			}
+
+			ball_in_game = true;
+		}
+	}
+
+
+
 
 	// Prepare for raycast ------------------------------------------------------
 	
@@ -487,6 +522,13 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(Ball_tex, x-3, y-3, NULL, 1.0f, App->physics->Ball->GetRotation());
 	}
 
+	//Draw Trigger
+	if (App->physics->Trigger != NULL)
+	{
+		int x, y;
+		App->physics->Trigger->GetPosition(x, y);
+		App->renderer->Blit(Trigger_tex, x, y, NULL, 1.0f, App->physics->Trigger->GetRotation());
+	}
 
 
 

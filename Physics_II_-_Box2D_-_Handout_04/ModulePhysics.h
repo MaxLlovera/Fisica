@@ -60,7 +60,10 @@ public:
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
 	PhysBody* CreateChainDynamic(int x, int y, int* points, int size);
+	
 	void CreateFlippers();
+	void CreateBall();
+	void CreateTrigger();
 
 	b2RevoluteJoint* CreateJoint(b2JointDef*);
 
