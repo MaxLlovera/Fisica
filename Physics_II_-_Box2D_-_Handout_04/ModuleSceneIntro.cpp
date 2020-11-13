@@ -25,7 +25,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	box = App->textures->Load("Assets/Sprites/crate.png");
+	flipper_text = App->textures->Load("Assets/Sprites/crate.png");
 	//Backgound
 	background = App->textures->Load("Assets/Sprites/background.png");
 
@@ -441,6 +441,18 @@ update_status ModuleSceneIntro::Update()
 		App->physics->CreateCircle(200, 500, 10);
 	}
 
+	if (App->physics->flipperL != NULL)
+	{
+		int x, y;
+		App->physics->flipperL->GetPosition(x, y);
+		App->renderer->Blit(flipper_text, x, y, NULL, 1.0f, App->physics->flipperL->GetRotation());
+	}
+	if (App->physics->flipperR != NULL)
+	{
+		int x, y;
+		App->physics->flipperR->GetPosition(x, y);
+		App->renderer->Blit(flipper_text, x, y, NULL, 1.0f, App->physics->flipperR->GetRotation());
+	}
 	// Prepare for raycast ------------------------------------------------------
 	
 	iPoint mouse;
