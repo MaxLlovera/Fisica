@@ -27,6 +27,10 @@ bool ModuleSceneIntro::Start()
 
 	flipperL_text = App->textures->Load("Assets/Sprites/FlipperL.png");
 	flipperR_text = App->textures->Load("Assets/Sprites/FlipperR.png");
+
+	flipper_text = App->textures->Load("Assets/Sprites/crate.png");
+	Ball_tex = App->textures->Load("Assets/Sprites/ball.png");
+
 	//Backgound
 	background = App->textures->Load("Assets/Sprites/background.png");
 
@@ -439,21 +443,13 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 	{
-		App->physics->CreateCircle(200, 500, 10);
+		App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10);
+
+
 	}
 
-	if (App->physics->flipperL != NULL)
-	{
-		int x, y;
-		App->physics->flipperL->GetPosition(x, y);
-		App->renderer->Blit(flipperL_text, x, y, NULL, 1.0f, App->physics->flipperL->GetRotation());
-	}
-	if (App->physics->flipperR != NULL)
-	{
-		int x, y;
-		App->physics->flipperR->GetPosition(x, y);
-		App->renderer->Blit(flipperR_text, x, y, NULL, 1.0f, App->physics->flipperR->GetRotation());
-	}
+
+
 	// Prepare for raycast ------------------------------------------------------
 	
 	iPoint mouse;
@@ -465,6 +461,34 @@ update_status ModuleSceneIntro::Update()
 
 	// All draw functions ------------------------------------------------------
 	p2List_item<PhysBody*>* c = circles.getFirst();
+
+
+	//Draw Flipper Left
+	if (App->physics->flipperL != NULL)
+	{
+		int x, y;
+		App->physics->flipperL->GetPosition(x, y);
+		App->renderer->Blit(flipperL_text, x, y, NULL, 1.0f, App->physics->flipperL->GetRotation());
+	}
+
+	//Draw Flipper Right
+	if (App->physics->flipperR != NULL)
+	{
+		int x, y;
+		App->physics->flipperR->GetPosition(x, y);
+		App->renderer->Blit(flipperR_text, x, y, NULL, 1.0f, App->physics->flipperR->GetRotation());
+	}
+
+	//Draw Ball
+	if (App->physics->Ball != NULL)
+	{
+		int x, y;
+		App->physics->Ball->GetPosition(x,y);
+		App->renderer->Blit(Ball_tex, x-3, y-3, NULL, 1.0f, App->physics->Ball->GetRotation());
+	}
+
+
+
 
 	while(c != NULL)
 	{

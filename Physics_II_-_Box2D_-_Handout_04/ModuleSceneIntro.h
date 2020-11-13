@@ -26,8 +26,13 @@ public:
 	bool sensed;
 
 
+
 	SDL_Texture* flipperR_text;
 	SDL_Texture* flipperL_text;
+
+	SDL_Texture* flipper_text;
+	SDL_Texture* Ball_tex;
+
 	SDL_Texture* background;
 	SDL_Texture* circle;
 	SDL_Texture* box;

@@ -244,6 +244,7 @@ void ModulePhysics::CreateFlippers()
 	//ESQUERRA
 	flipperL = CreateRectangle(195, 815,65, 15);
 	axisL = CreateCircleStatic(170, 815, 2);
+	Ball = CreateCircle(200, 500, 10);
 	//App->renderer->Blit(App->scene_intro->box, 195, 815,NULL , 1.0f);
 
 	flipperJoint.bodyA = flipperL->body;

@@ -74,6 +74,7 @@ public:
 	PhysBody* flipperR = nullptr;
 	PhysBody* axisL = nullptr;
 	PhysBody* axisR = nullptr;
+	PhysBody* Ball = nullptr;
 	SDL_Texture* rTextFlip = nullptr;
 	SDL_Texture* lTextFlip = nullptr;
 
