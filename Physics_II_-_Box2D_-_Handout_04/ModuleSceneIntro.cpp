@@ -35,7 +35,10 @@ bool ModuleSceneIntro::Start()
 	flipper_text = App->textures->Load("Assets/Sprites/crate.png");
 	Ball_tex = App->textures->Load("Assets/Sprites/ball.png");
 	Trigger_tex = App->textures->Load("Assets/Sprites/spoink.png");
-
+	if (this->IsEnabled() == true)
+	{
+		App->audio->PlayMusic("Assets/Audio/game_music.ogg");
+	}
 	//Backgound
 	background = App->textures->Load("Assets/Sprites/background.png");
 	

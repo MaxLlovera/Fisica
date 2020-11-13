@@ -23,8 +23,12 @@ ModuleInitialScene::~ModuleInitialScene()
 bool ModuleInitialScene::Start()
 {
 	LOG("Loading background assets");
-	
+
+	// L03: DONE: Load map
 	introText = App->textures->Load("Assets/Sprites/inicial.png");
+	// Load music
+	App->audio->PlayMusic("Assets/Audio/intro_music.ogg");
+	
 	bool ret = true;
 	return ret;
 }
@@ -52,5 +56,6 @@ update_status ModuleInitialScene::PostUpdate()
 bool ModuleInitialScene::CleanUp()
 {
 	App->textures->Unload(introText);
+	this->Disable();
 	return true;
 }
