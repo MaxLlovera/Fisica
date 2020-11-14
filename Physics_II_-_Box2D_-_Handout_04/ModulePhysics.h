@@ -61,6 +61,7 @@ public:
 
 	PhysBody* CreateChain(int x, int y, int* points, int size);
 	PhysBody* CreateChainSensor(int x, int y, int* points, int size);
+	PhysBody* CreateAudioSensor(int x, int y, int* points, int size);
 	
 	void CreateFlippers();
 	void CreateBall();

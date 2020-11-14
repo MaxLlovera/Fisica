@@ -399,6 +399,62 @@ bool ModuleSceneIntro::Start()
 		132, 701,
 		141, 707
 	};
+	int SensorAudio[108] = {
+		154, 282,
+		150, 265,
+		149, 245,
+		159, 231,
+		174, 227,
+		197, 219,
+		219, 207,
+		240, 190,
+		260, 185,
+		284, 187,
+		302, 192,
+		309, 204,
+		312, 219,
+		312, 242,
+		312, 263,
+		309, 270,
+		303, 277,
+		284, 271,
+		264, 271,
+		249, 266,
+		242, 255,
+		236, 241,
+		230, 229,
+		218, 224,
+		220, 232,
+		224, 243,
+		229, 250,
+		231, 260,
+		234, 271,
+		251, 276,
+		262, 278,
+		278, 285,
+		291, 295,
+		291, 316,
+		287, 338,
+		278, 345,
+		264, 355,
+		250, 355,
+		229, 355,
+		221, 345,
+		216, 336,
+		212, 317,
+		218, 300,
+		223, 292,
+		234, 285,
+		235, 277,
+		229, 281,
+		223, 285,
+		216, 291,
+		212, 299,
+		207, 307,
+		198, 310,
+		172, 295,
+		165, 290
+	};
 
 	bckg.add(App->physics->CreateChain(0, 40, background1, 194));
 	bckg.add(App->physics->CreateChain(0, 40, background_partSuperior, 34));
@@ -414,6 +470,7 @@ bool ModuleSceneIntro::Start()
 	bckg.add(App->physics->CreateChain(0, 40, rebotador3, 34));
 	bckg.add(App->physics->CreateChain(0, 40, rebotblauD, 18));
 	bckg.add(App->physics->CreateChain(0, 40, rebotblauE, 20));
+	bckg.add(App->physics->CreateChain(0, 40, SensorAudio, 108));
 
 	
 	Sensor_Reb1 = App->physics->CreateChainSensor(0, 40, rebotador1,32);
@@ -422,16 +479,17 @@ bool ModuleSceneIntro::Start()
 	Sensor_rebotblauD = App->physics->CreateChainSensor(0, 40, rebotblauD,18);
 	Sensor_rebotblauE = App->physics->CreateChainSensor(0, 40, rebotblauE,20);
 	
+	Sensor_Audio = App->physics->CreateAudioSensor(0, 40, SensorAudio, 108);
+	
 	rebotblauLight = App->physics->CreateChainSensor(0, 40, rebotblauD, 18);
 
-	Sensor_teleport = App->physics->CreateRectangleSensor(347, 334, 44, 7);
 	
 	Sensor_Reb1->listener = this;
 	Sensor_Reb2->listener = this;
 	Sensor_Reb3->listener = this;
 	Sensor_rebotblauD->listener = this;
 	Sensor_rebotblauE->listener = this;
-	//Sensor_teleport->listener = this;
+	Sensor_Audio->listener = this;
 
 	App->physics->CreateBall();
 	lifes = 5;
@@ -454,7 +512,6 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	
 	//Draw background
 	App->renderer->Blit(background, 0, 40);
 	App->fonts->BlitText(0, 16, whiteFont, "score.");
@@ -771,9 +828,12 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	
-	//if(App->physics->Ball->body->GetWorldCenter()==bodyA->body->GetWorldCenter())
-	//App->physics->Ball->body->GetWorld()->
+
+	if (bodyA == Sensor_Audio)
+	{
+		App->audio->playing = false;
+	}
+
 
 	if (lifes > 0)
 	{

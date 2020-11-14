@@ -19,7 +19,7 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void Teleport();
 	void Restart();
-	void End();
+
 public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
@@ -35,7 +35,7 @@ public:
 	PhysBody* Sensor_rebotblauD;
 	PhysBody* Sensor_rebotblauE;
 	PhysBody* rebotblauLight;
-	PhysBody* Sensor_teleport;
+	PhysBody* Sensor_Audio;
 
 	SDL_Texture* flipperR_text;
 	SDL_Texture* flipperL_text;
