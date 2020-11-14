@@ -66,7 +66,7 @@ public:
 	
 	void CreateFlippers();
 	void CreateBall();
-	void CreateTrigger();
+	void CreateTrigger(int x, int y);
 
 	b2RevoluteJoint* CreateJoint(b2JointDef*);
 

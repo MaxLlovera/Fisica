@@ -529,6 +529,7 @@ update_status ModuleSceneIntro::Update()
 		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		{
 			boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
+
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
@@ -546,30 +547,57 @@ update_status ModuleSceneIntro::Update()
 			if (y > 690) {
 				srand(time(NULL));
 				int random = rand() % 100;
-				if (random <= 33) {
-					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.75f), App->physics->Ball->body->GetLocalCenter(), true);
+				if (random <= 50) {
+					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.95f), App->physics->Ball->body->GetLocalCenter(), true);
 				}
-				else if (random <= 66)
+				else //if (random <= 66)
 				{
 					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -2.5f), App->physics->Ball->body->GetLocalCenter(), true);
 				}
-				else
-				{
-					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.95f), App->physics->Ball->body->GetLocalCenter(), true);
+				//else
+				//{
+				//	App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -2.7f), App->physics->Ball->body->GetLocalCenter(), true);
 
-				}
+				//}
+
 				App->audio->PlayFx(spoink_fx, 0);
 				ball_in_game = true;
 			}
+			App->physics->Trigger->body->GetWorld()->DestroyBody(App->physics->Trigger->body);
+			App->physics->CreateTrigger(499, 855);
+
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !ball_in_game)
+		{
+			int x, y;
+			App->physics->Trigger->GetPosition(x, y);
+			if (count == 0)
+			{
+				App->physics->Trigger->body->GetWorld()->DestroyBody(App->physics->Trigger->body);
+				App->physics->CreateTrigger(499, 860);
+				count++;
+			}
+			//if (count == 1)
+			//{
+			//	App->physics->Trigger->body->GetWorld()->DestroyBody(App->physics->Trigger->body);
+			//	App->physics->CreateTrigger(499, 870);
+			//	count++;
+			//}
+			if (count == 1)
+			{
+				App->physics->Trigger->body->GetWorld()->DestroyBody(App->physics->Trigger->body);
+				App->physics->CreateTrigger(499, 880);
+
+				count = 0;
+			}
+
+		}
 
 		//restart with F2
 		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-		{
-			
+		{		
 			Restart();
-
 		}
 
 

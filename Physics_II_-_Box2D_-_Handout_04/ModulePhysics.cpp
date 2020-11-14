@@ -49,7 +49,7 @@ bool ModulePhysics::Start()
 	b2Body* big_ball = world->CreateBody(&body);
 	CreateFlippers();
 	
-	CreateTrigger();
+	CreateTrigger(499, 855);
 	//rTextFlip = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
 	//flipper_tx = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
 
@@ -360,10 +360,11 @@ void ModulePhysics::CreateBall()
 	Ball = CreateCircle(500, 600, 10);
 }
 
-void ModulePhysics::CreateTrigger()
+void ModulePhysics::CreateTrigger(int x,int y)
 {
 	//TRIGGER
-	Trigger = CreateRectangleStatic(499, 855, 30, 90);
+	//499 855
+	Trigger = CreateRectangleStatic(x, y, 30, 90);
 }
 
 

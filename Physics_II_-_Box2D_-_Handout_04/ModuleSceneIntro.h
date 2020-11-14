@@ -74,6 +74,7 @@ public:
 	bool iluminacioBola2 = false;
 	bool iluminacioBola3 = false;
 
+	int count = 0;
 	bool ball_in_game;
 
 	bool dead = false;
