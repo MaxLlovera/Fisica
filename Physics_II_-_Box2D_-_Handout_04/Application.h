@@ -15,6 +15,7 @@ class ModuleInitialScene;
 class ModuleSceneIntro;
 class ModuleLoseScreen;
 class ModulePhysics;
+class ModuleFonts;
 
 class Application
 {
@@ -26,6 +27,7 @@ public:
 	ModuleAudio* audio;
 	ModulePlayer* player;
 	ModuleFadeToBlack* fade_to_black;
+	ModuleFonts* fonts;
 	ModuleInitialScene* initial_scene;
 	ModuleSceneIntro* scene_intro;
 	ModuleLoseScreen* lose_screen;

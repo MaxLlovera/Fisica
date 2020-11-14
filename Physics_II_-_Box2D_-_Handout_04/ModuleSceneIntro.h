@@ -14,6 +14,7 @@ public:
 
 	bool Start();
 	update_status Update();
+	//update_status PostUpdate();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
@@ -57,11 +58,17 @@ public:
 	p2Point<int> ray;
 	bool ray_on;
 
+	uint score = 000;
+	int whiteFont = -1;
+	char scoreText[10] = { "\0" };
+
+
+
 	bool ball_in_game;
 
 	bool dead = false;
 	bool deadEnd = false;
-	int score = 0;
+
 	int lifes;
 
 };

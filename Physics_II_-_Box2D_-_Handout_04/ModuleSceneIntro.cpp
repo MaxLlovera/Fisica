@@ -8,6 +8,7 @@
 #include "ModulePhysics.h"
 #include "ModuleInitialScene.h"
 #include "ModuleLoseScreen.h"
+#include "ModuleFonts.h"
 #include "ModuleFadeToBlack.h"
 #include <stdio.h>
 #include <time.h>
@@ -49,6 +50,10 @@ bool ModuleSceneIntro::Start()
 	death_fx = App->audio->LoadFx("Assets/Audio/death.wav");
 	bump_fx = App->audio->LoadFx("Assets/Audio/bumphit.wav");
 	pump_fx = App->audio->LoadFx("Assets/Audio/pumphit.wav");
+
+
+	char lookupTable[] = { "0123456789.,&!'-©abcdefghijklmnopqrstuvwxyz.    " };
+	whiteFont = App->fonts->Load("Assets/Sprites/whiteFont.png", lookupTable, 3);
 
 	//trigger
 	ball_in_game = false;
@@ -426,7 +431,7 @@ bool ModuleSceneIntro::Start()
 
 	App->physics->CreateBall();
 	lifes = 5;
-
+	
 	return ret;
 }
 
@@ -448,7 +453,7 @@ update_status ModuleSceneIntro::Update()
 	
 	//Draw background
 	App->renderer->Blit(background, 0, 40);
-	
+	App->fonts->BlitText(0, 16, whiteFont, "score.");
 
 
 	if (lifes > 0)
@@ -675,9 +680,29 @@ update_status ModuleSceneIntro::Update()
 		App->fade_to_black->FadeToBlack(this, App->lose_screen, 60);
 	}
 
-
+	sprintf_s(scoreText, 10, "%d", score);
+	if (score < 10) {
+		App->fonts->BlitText(240, 16, whiteFont, scoreText);
+	}
+	else if (score >= 10 && score < 100) {
+		App->fonts->BlitText(216, 16, whiteFont, scoreText);
+	}
+	else if (score >= 100 && score < 1000) {
+		App->fonts->BlitText(192, 16, whiteFont, scoreText);
+	}
+	else if (score >= 1000 && score < 10000) {
+		App->fonts->BlitText(168, 16, whiteFont, scoreText);
+	}
+	else if (score >= 10000 && score < 100000) {
+		App->fonts->BlitText(144, 16, whiteFont, scoreText);
+	}
+	if (score > 20000) {
+		App->fonts->BlitText(40, 16, whiteFont, scoreText);
+		App->fonts->BlitText(360, 16, whiteFont, scoreText);
+	}
 	return UPDATE_CONTINUE;
 }
+
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
@@ -757,6 +782,7 @@ void ModuleSceneIntro::Restart()
 		ball_in_game = false;
 		dead = false;
 		deadEnd = true;
+		score = 0;
 		lifes--;
 	}
 

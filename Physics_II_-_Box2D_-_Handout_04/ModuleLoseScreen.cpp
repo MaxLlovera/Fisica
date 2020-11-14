@@ -7,7 +7,9 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModuleInitialScene.h"
+#include "ModuleSceneIntro.h"
 #include "ModuleLoseScreen.h"
+#include "ModuleFonts.h"
 #include "ModuleFadeToBlack.h"
 
 ModuleLoseScreen::ModuleLoseScreen(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -29,7 +31,8 @@ bool ModuleLoseScreen::Start()
 	loseText = App->textures->Load("Assets/Sprites/SceneLose.png");
 	// Load music
 	App->audio->PlayMusic("Assets/Audio/intro_music.ogg");
-	
+	char lookupTable[] = { "0123456789.,&!'-©abcdefghijklmnopqrstuvwxyz.    " };
+	whiteFont = App->fonts->Load("Assets/Sprites/whiteFont.png", lookupTable, 3);
 	bool ret = true;
 	return ret;
 }
@@ -37,6 +40,8 @@ bool ModuleLoseScreen::Start()
 update_status ModuleLoseScreen::Update()
 {
 	App->renderer->Blit(loseText, 0, 0);
+	App->fonts->BlitText(0, 16, whiteFont, "final score.");
+	App->fonts->BlitText(0, 16, whiteFont, App->scene_intro->scoreText);
 
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{

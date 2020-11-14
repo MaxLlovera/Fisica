@@ -11,6 +11,7 @@
 #include "ModuleInitialScene.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleLoseScreen.h"
+#include "ModuleFonts.h"
 #include "Application.h"
 
 Application::Application()
@@ -21,6 +22,7 @@ Application::Application()
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
 	player = new ModulePlayer(this);
+	fonts = new ModuleFonts(this);
 	fade_to_black = new ModuleFadeToBlack(this);
 	initial_scene = new ModuleInitialScene(this);
 	scene_intro = new ModuleSceneIntro(this);
@@ -39,6 +41,7 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(fade_to_black);
+	AddModule(fonts);
 	// Scenes
 	AddModule(initial_scene);
 	AddModule(scene_intro);
