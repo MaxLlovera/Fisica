@@ -44,6 +44,9 @@ public:
 	SDL_Texture* Ball_tex;
 	SDL_Texture* Trigger_tex;
 	SDL_Texture* Life_tex;
+	SDL_Texture* light_bouncerR;
+	SDL_Texture* light_bouncerL;
+	SDL_Texture* light_ball;
 
 	SDL_Texture* background;
 	SDL_Texture* circle;
@@ -64,6 +67,12 @@ public:
 	char scoreText[10] = { "\0" };
 
 	bool tp = false;
+
+	bool iluminarDret = false;
+	bool iluminarEsquerra = false;
+	bool iluminacioBola1 = false;
+	bool iluminacioBola2 = false;
+	bool iluminacioBola3 = false;
 
 	bool ball_in_game;
 

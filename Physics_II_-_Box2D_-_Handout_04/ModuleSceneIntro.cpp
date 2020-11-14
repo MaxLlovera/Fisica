@@ -39,6 +39,9 @@ bool ModuleSceneIntro::Start()
 	Ball_tex = App->textures->Load("Assets/Sprites/ball.png");
 	Trigger_tex = App->textures->Load("Assets/Sprites/spoink.png");
 	Life_tex = App->textures->Load("Assets/Sprites/Lifes.png");
+	light_bouncerL = App->textures->Load("Assets/Sprites/lightBouncerL.png");
+	light_bouncerR = App->textures->Load("Assets/Sprites/lightBouncerR.png");
+	light_ball = App->textures->Load("Assets/Sprites/light_ball.png");
 
 	//LOAD AUDIOS/FX
 	if (this->IsEnabled() == true)
@@ -455,7 +458,7 @@ update_status ModuleSceneIntro::Update()
 	//Draw background
 	App->renderer->Blit(background, 0, 40);
 	App->fonts->BlitText(0, 16, whiteFont, "score.");
-
+	
 
 	if (lifes > 0)
 	{
@@ -678,6 +681,34 @@ update_status ModuleSceneIntro::Update()
 		{
 			Teleport();
 		}
+		//Bounce Light
+		if (iluminarDret)
+		{
+			App->renderer->Blit(light_bouncerR, 328, 666);
+			iluminarDret = false;
+		}
+		if (iluminarEsquerra)
+		{
+			App->renderer->Blit(light_bouncerL, 104, 670);
+			iluminarEsquerra = false;
+		}
+
+		//Balls Light
+		if (iluminacioBola1)
+		{
+			App->renderer->Blit(light_ball, 246, 250);
+			iluminacioBola1 = false;
+		}
+		if (iluminacioBola2)
+		{
+			App->renderer->Blit(light_ball, 171, 280);
+			iluminacioBola2 = false;
+		}
+		if (iluminacioBola3)
+		{
+			App->renderer->Blit(light_ball, 228, 334);
+			iluminacioBola3 = false;
+		}
 	}
 	else 
 	{
@@ -712,8 +743,6 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	
-
 	if (lifes > 0)
 	{
 		if (bodyA == Sensor_Reb1)
@@ -722,6 +751,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
 			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
 			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
+			iluminacioBola1 = true;
 			score += 30;
 			App->audio->PlayFx(pump_fx, 0);
 		}
@@ -732,6 +762,8 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
 			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
 			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
+			iluminacioBola2 = true;
+
 			score += 30;
 			App->audio->PlayFx(pump_fx, 0);
 		}
@@ -742,20 +774,28 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
 			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
 			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.02f, -1.0f) , App->physics->Ball->body->GetLocalCenter(), true);
+			iluminacioBola3 = true;
+
 			score += 30;
 			App->audio->PlayFx(pump_fx, 0);
 		}
 
 		if (bodyA == Sensor_rebotblauD)
 		{
+			iluminarDret = true;
+			
 			App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.2f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
 			App->audio->PlayFx(bump_fx, 0);
+			//score += 30;
 		}
 
 		if (bodyA == Sensor_rebotblauE)
 		{
+			iluminarEsquerra = true;
+			
 			App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.5f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
 			App->audio->PlayFx(bump_fx, 0);
+			//score += 30;
 		}
 
 
@@ -774,6 +814,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}
 
 }
+
 void ModuleSceneIntro::Teleport()
 {
 	int x, y;
@@ -797,9 +838,7 @@ void ModuleSceneIntro::Restart()
 	{
 		App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
 		App->physics->Ball = nullptr;
-
 		App->physics->Ball = App->physics->CreateCircle(500, 600, 10);
-
 		ball_in_game = false;
 		dead = false;
 		lifes--;
