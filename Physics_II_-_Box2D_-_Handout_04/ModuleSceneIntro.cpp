@@ -403,8 +403,24 @@ bool ModuleSceneIntro::Start()
 	bckg.add(App->physics->CreateChain(0, 40, rebotblauE, 20));
 
 	
-	sensor = App->physics->CreateRectangleSensor(500, 300, 40, 50);
-	score = 0;
+	Sensor_Reb1 = App->physics->CreateChainSensor(0, 40, rebotador1,32);
+	Sensor_Reb2 = App->physics->CreateChainSensor(0, 40, rebotador2,30);
+	Sensor_Reb3 = App->physics->CreateChainSensor(0, 40, rebotador3,34);
+	Sensor_rebotblauD = App->physics->CreateChainSensor(0, 40, rebotblauD,18);
+	Sensor_rebotblauE = App->physics->CreateChainSensor(0, 40, rebotblauE,20);
+	
+	rebotblauLight = App->physics->CreateChainSensor(0, 40, rebotblauD, 18);
+
+	
+	
+	Sensor_Reb1->listener = this;
+	Sensor_Reb2->listener = this;
+	Sensor_Reb3->listener = this;
+	Sensor_rebotblauD->listener = this;
+	Sensor_rebotblauE->listener = this;
+
+
+	lifes = 5;
 
 	return ret;
 }
@@ -503,7 +519,9 @@ update_status ModuleSceneIntro::Update()
 	//restart with F2
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
+		App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
 		Restart();
+
 	}
 
 
@@ -613,53 +631,74 @@ update_status ModuleSceneIntro::Update()
 	}
 
 
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	
 
-	bool xocat = false;
-	if (bodyA == sensor){
-		xocat = true;
+	
+	if (bodyA == Sensor_Reb1)
+	{
+		//App->physics->Ball->body->IsFixedRotation();
+		//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
+		//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
+		//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
+		score += 30;
+	}
+	if (bodyA == Sensor_Reb2) 
+	{
+		//App->physics->Ball->body->IsFixedRotation();
+
+		//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
+		//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
+		//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
+		score += 30;
+
+	}
+	if (bodyA == Sensor_Reb3) 
+	{
+		//App->physics->Ball->body->IsFixedRotation();
+
+		//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
+		//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
+		//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.02f, -1.0f) , App->physics->Ball->body->GetLocalCenter(), true);
 		score += 30;
 	}
 
-
-	/*int x, y;
-
-	App->audio->PlayFx(bonus_fx);*/
-
-	/*
-	if(bodyA)
+	if (bodyA == Sensor_rebotblauD)
 	{
-		bodyA->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
+		App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.2f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
+
+	}	
+
+	if (bodyA == Sensor_rebotblauE)
+	{
+		App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.5f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
+
 	}
 
-	if(bodyB)
+
+	if (bodyA == rebotblauLight)
 	{
-		bodyB->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
-	}*/
+		
+	}
+
+
 }
 
 
 void ModuleSceneIntro::Restart()
 {
-	//Canviar score i tal
-	
-	//CleanUp();
-	//App->physics->CreateBall();
-	/*
-	int x, y;
-	App->physics->Ball->GetPosition(x, y);
-	App->renderer->Blit(Ball_tex, x - 3, y - 3, NULL, 1.0f, App->physics->Ball->GetRotation());*/
+
 
 	App->physics->Ball = nullptr;
-	App->physics->Ball = App->physics->CreateCircle(500, 600, 10);
+	App->physics->Ball = App->physics->CreateCircle(335, 600, 10);
 
-
+	ball_in_game = false;
 	dead = false;
+	lifes--;
 
 }

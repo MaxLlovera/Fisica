@@ -39,7 +39,7 @@ update_status ModuleInitialScene::Update()
 	
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlack(this, App->scene_intro, 60);
+		App->fade_to_black->FadeToBlack(this, App->scene_intro, 0);
 	}
 	return UPDATE_CONTINUE;
 }

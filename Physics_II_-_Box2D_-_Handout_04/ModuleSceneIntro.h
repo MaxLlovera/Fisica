@@ -24,9 +24,16 @@ public:
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> bckg;
 
-	PhysBody* sensor;
+	
 	bool sensed;
 
+	//sensors
+	PhysBody* Sensor_Reb1;
+	PhysBody* Sensor_Reb2;
+	PhysBody* Sensor_Reb3;
+	PhysBody* Sensor_rebotblauD;
+	PhysBody* Sensor_rebotblauE;
+	PhysBody* rebotblauLight;
 
 
 	SDL_Texture* flipperR_text;
@@ -52,5 +59,7 @@ public:
 
 	bool dead = false;
 	
-	int score;
+	int score = 0;
+	int lifes;
+
 };
