@@ -58,11 +58,9 @@ public:
 	PhysBody* CreateRectangleStatic(int x, int y, int width, int height);
 
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateCircleSensor(int x, int y, int radius);
 
 	PhysBody* CreateChain(int x, int y, int* points, int size);
 	PhysBody* CreateChainSensor(int x, int y, int* points, int size);
-	PhysBody* CreateChainDynamic(int x, int y, int* points, int size);
 	
 	void CreateFlippers();
 	void CreateBall();

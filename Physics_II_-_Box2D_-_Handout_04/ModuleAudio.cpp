@@ -163,6 +163,6 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 		Mix_PlayChannel(-1, chunk, repeat);
 		ret = true;
 	}
-
+	playing = false;
 	return ret;
 }

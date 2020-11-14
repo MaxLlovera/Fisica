@@ -771,17 +771,21 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	
+	//if(App->physics->Ball->body->GetWorldCenter()==bodyA->body->GetWorldCenter())
+	//App->physics->Ball->body->GetWorld()->
+
 	if (lifes > 0)
 	{
 		if (bodyA == Sensor_Reb1)
 		{
-			//App->physics->Ball->body->IsFixedRotation();
-			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
-			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
-			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
 			iluminacioBola1 = true;
-			score += 30;
+			if (App->audio->playing == false)
+				score += 30;
+
+
 			App->audio->PlayFx(pump_fx, 0);
+			App->audio->playing = true;
 		}
 		if (bodyA == Sensor_Reb2)
 		{
@@ -791,21 +795,23 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
 			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
 			iluminacioBola2 = true;
+			if (App->audio->playing == false)
+				score += 30;
 
-			score += 30;
+
 			App->audio->PlayFx(pump_fx, 0);
+			App->audio->playing = true;
 		}
 		if (bodyA == Sensor_Reb3)
 		{
-			//App->physics->Ball->body->IsFixedRotation();
-
-			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
-			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
-			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.02f, -1.0f) , App->physics->Ball->body->GetLocalCenter(), true);
+		
 			iluminacioBola3 = true;
+			if (App->audio->playing == false)
+				score += 30;
+			
 
-			score += 30;
 			App->audio->PlayFx(pump_fx, 0);
+			App->audio->playing = true;
 		}
 
 		if (bodyA == Sensor_rebotblauD)
@@ -814,7 +820,6 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			
 			App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.2f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
 			App->audio->PlayFx(bump_fx, 0);
-			//score += 30;
 		}
 
 		if (bodyA == Sensor_rebotblauE)
@@ -823,21 +828,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			
 			App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.5f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
 			App->audio->PlayFx(bump_fx, 0);
-			//score += 30;
 		}
-
-
-		if (bodyA == rebotblauLight)
-		{
-
-		}
-
-		//if (bodyA == Sensor_teleport)
-		//{
-
-		//	//Restart();
-		//	//App->audio->PlayFx(tp_fx, 0);
-		//}
 
 	}
 
@@ -867,6 +858,7 @@ void ModuleSceneIntro::Restart()
 		App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
 		App->physics->Ball = nullptr;
 		App->physics->Ball = App->physics->CreateCircle(500, 600, 10);
+		//App->physics->Ball = App->physics->CreateCircle(250, 310, 10);
 		ball_in_game = false;
 		dead = false;
 		lifes--;
