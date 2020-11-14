@@ -266,8 +266,7 @@ PhysBody* ModulePhysics::CreateChainSensor(int x, int y, int* points, int size)
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.isSensor = true;
-	fixture.friction = 0;
-
+	//fixture.density = 0.0f;
 	b->CreateFixture(&fixture);
 
 	delete p;
@@ -280,41 +279,6 @@ PhysBody* ModulePhysics::CreateChainSensor(int x, int y, int* points, int size)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateAudioSensor(int x, int y, int* points, int size)
-{
-	b2BodyDef body;
-	body.type = b2_staticBody;
-	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-
-	b2Body* b = world->CreateBody(&body);
-
-	b2ChainShape shape;
-	b2Vec2* p = new b2Vec2[size / 2];
-
-	for (uint i = 0; i < size / 2; ++i)
-	{
-		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
-		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
-	}
-
-	shape.CreateLoop(p, size / 2);
-
-	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	fixture.isSensor = true;
-
-
-	b->CreateFixture(&fixture);
-
-	delete p;
-
-	PhysBody* pbody = new PhysBody();
-	pbody->body = b;
-	b->SetUserData(pbody);
-	pbody->width = pbody->height = 0;
-
-	return pbody;
-}
 
 
 void ModulePhysics::CreateFlippers()

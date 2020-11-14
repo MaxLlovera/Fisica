@@ -54,6 +54,7 @@ bool ModuleSceneIntro::Start()
 	bump_fx = App->audio->LoadFx("Assets/Audio/bumphit.wav");
 	pump_fx = App->audio->LoadFx("Assets/Audio/pumphit.wav");
 	tp_fx = App->audio->LoadFx("Assets/Audio/teleport.wav");
+	none = App->audio->LoadFx("Assets/Audio/none.wav");
 
 	char lookupTable[] = { "0123456789.,&!'-©abcdefghijklmnopqrstuvwxyz.    " };
 	whiteFont = App->fonts->Load("Assets/Sprites/whiteFont.png", lookupTable, 3);
@@ -399,62 +400,53 @@ bool ModuleSceneIntro::Start()
 		132, 701,
 		141, 707
 	};
-	int SensorAudio[108] = {
-		154, 282,
-		150, 265,
-		149, 245,
-		159, 231,
-		174, 227,
-		197, 219,
-		219, 207,
-		240, 190,
-		260, 185,
-		284, 187,
-		302, 192,
-		309, 204,
-		312, 219,
-		312, 242,
-		312, 263,
-		309, 270,
-		303, 277,
-		284, 271,
-		264, 271,
-		249, 266,
-		242, 255,
-		236, 241,
-		230, 229,
-		218, 224,
-		220, 232,
-		224, 243,
-		229, 250,
-		231, 260,
-		234, 271,
-		251, 276,
-		262, 278,
-		278, 285,
-		291, 295,
-		291, 316,
-		287, 338,
-		278, 345,
-		264, 355,
-		250, 355,
-		229, 355,
-		221, 345,
-		216, 336,
-		212, 317,
-		218, 300,
-		223, 292,
-		234, 285,
-		235, 277,
-		229, 281,
-		223, 285,
-		216, 291,
-		212, 299,
-		207, 307,
-		198, 310,
-		172, 295,
-		165, 290
+	int SensorAudio[88] = {
+		179, 320,
+	174, 312,
+	166, 302,
+	158, 296,
+	152, 283,
+	147, 270,
+	147, 255,
+	148, 236,
+	154, 229,
+	166, 220,
+	177, 215,
+	184, 210,
+	196, 199,
+	211, 195,
+	226, 189,
+	251, 183,
+	264, 181,
+	283, 182,
+	296, 188,
+	307, 195,
+	314, 210,
+	322, 223,
+	324, 238,
+	322, 246,
+	322, 256,
+	317, 275,
+	314, 284,
+	307, 295,
+	307, 309,
+	307, 320,
+	305, 334,
+	305, 341,
+	304, 350,
+	299, 356,
+	286, 360,
+	272, 364,
+	249, 374,
+	229, 368,
+	215, 362,
+	206, 353,
+	201, 340,
+	198, 326,
+	200, 316,
+	190, 314
 	};
+
 
 	bckg.add(App->physics->CreateChain(0, 40, background1, 194));
 	bckg.add(App->physics->CreateChain(0, 40, background_partSuperior, 34));
@@ -470,7 +462,6 @@ bool ModuleSceneIntro::Start()
 	bckg.add(App->physics->CreateChain(0, 40, rebotador3, 34));
 	bckg.add(App->physics->CreateChain(0, 40, rebotblauD, 18));
 	bckg.add(App->physics->CreateChain(0, 40, rebotblauE, 20));
-	bckg.add(App->physics->CreateChain(0, 40, SensorAudio, 108));
 
 	
 	Sensor_Reb1 = App->physics->CreateChainSensor(0, 40, rebotador1,32);
@@ -479,7 +470,7 @@ bool ModuleSceneIntro::Start()
 	Sensor_rebotblauD = App->physics->CreateChainSensor(0, 40, rebotblauD,18);
 	Sensor_rebotblauE = App->physics->CreateChainSensor(0, 40, rebotblauE,20);
 	
-	Sensor_Audio = App->physics->CreateAudioSensor(0, 40, SensorAudio, 108);
+	Sensor_Audio = App->physics->CreateChainSensor(0, 40, SensorAudio, 88);
 	
 	rebotblauLight = App->physics->CreateChainSensor(0, 40, rebotblauD, 18);
 
@@ -831,7 +822,8 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	if (bodyA == Sensor_Audio)
 	{
-		App->audio->playing = false;
+		App->audio->PlayFx(none, 0);
+
 	}
 
 
@@ -906,6 +898,7 @@ void ModuleSceneIntro::Teleport()
 			App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
 			App->physics->Ball = nullptr;
 			App->audio->PlayFx(tp_fx, 0);
+			score += 50;
 			App->physics->Ball = App->physics->CreateCircle(49, 100, 10);
 		}
 	}

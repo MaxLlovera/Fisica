@@ -58,6 +58,7 @@ public:
 	uint hitflipper_fx = 0;
 	uint bump_fx = 0;
 	uint pump_fx = 0;
+	uint none = 0;
 	uint tp_fx = 0;
 	p2Point<int> ray;
 	bool ray_on;
