@@ -431,7 +431,7 @@ bool ModuleSceneIntro::Start()
 
 	App->physics->CreateBall();
 	lifes = 5;
-	
+	score = 0;
 	return ret;
 }
 
@@ -782,7 +782,6 @@ void ModuleSceneIntro::Restart()
 		ball_in_game = false;
 		dead = false;
 		deadEnd = true;
-		score = 0;
 		lifes--;
 	}
 

@@ -40,8 +40,8 @@ bool ModuleLoseScreen::Start()
 update_status ModuleLoseScreen::Update()
 {
 	App->renderer->Blit(loseText, 0, 0);
-	App->fonts->BlitText(0, 16, whiteFont, "final score.");
-	App->fonts->BlitText(0, 16, whiteFont, App->scene_intro->scoreText);
+	
+	App->fonts->BlitText(404,688, whiteFont, App->scene_intro->scoreText);
 
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
