@@ -50,7 +50,7 @@ bool ModuleSceneIntro::Start()
 	death_fx = App->audio->LoadFx("Assets/Audio/death.wav");
 	bump_fx = App->audio->LoadFx("Assets/Audio/bumphit.wav");
 	pump_fx = App->audio->LoadFx("Assets/Audio/pumphit.wav");
-
+	tp_fx = App->audio->LoadFx("Assets/Audio/teleport.wav");
 
 	char lookupTable[] = { "0123456789.,&!'-©abcdefghijklmnopqrstuvwxyz.    " };
 	whiteFont = App->fonts->Load("Assets/Sprites/whiteFont.png", lookupTable, 3);
@@ -421,13 +421,14 @@ bool ModuleSceneIntro::Start()
 	
 	rebotblauLight = App->physics->CreateChainSensor(0, 40, rebotblauD, 18);
 
-	
+	Sensor_teleport = App->physics->CreateRectangleSensor(347, 334, 44, 7);
 	
 	Sensor_Reb1->listener = this;
 	Sensor_Reb2->listener = this;
 	Sensor_Reb3->listener = this;
 	Sensor_rebotblauD->listener = this;
 	Sensor_rebotblauE->listener = this;
+	//Sensor_teleport->listener = this;
 
 	App->physics->CreateBall();
 	lifes = 5;
@@ -673,6 +674,10 @@ update_status ModuleSceneIntro::Update()
 			if (normal.x != 0.0f)
 				App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 		}
+		if (App->physics->Ball != nullptr)
+		{
+			Teleport();
+		}
 	}
 	else 
 	{
@@ -700,6 +705,7 @@ update_status ModuleSceneIntro::Update()
 		App->fonts->BlitText(40, 16, whiteFont, scoreText);
 		App->fonts->BlitText(360, 16, whiteFont, scoreText);
 	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -757,10 +763,33 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		{
 
 		}
+
+		//if (bodyA == Sensor_teleport)
+		//{
+
+		//	//Restart();
+		//	//App->audio->PlayFx(tp_fx, 0);
+		//}
+
 	}
 
 }
+void ModuleSceneIntro::Teleport()
+{
+	int x, y;
+	App->physics->Ball->GetPosition(x, y);
 
+	if (x > 347 && x < 394)
+	{
+		if (y > 326 && y < 343)
+		{
+			App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
+			App->physics->Ball = nullptr;
+			App->audio->PlayFx(tp_fx, 0);
+			App->physics->Ball = App->physics->CreateCircle(49, 100, 10);
+		}
+	}
+}
 
 void ModuleSceneIntro::Restart()
 {

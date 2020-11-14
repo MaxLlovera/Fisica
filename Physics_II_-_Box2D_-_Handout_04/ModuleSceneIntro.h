@@ -17,7 +17,7 @@ public:
 	//update_status PostUpdate();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
-
+	void Teleport();
 	void Restart();
 	void End();
 public:
@@ -35,7 +35,7 @@ public:
 	PhysBody* Sensor_rebotblauD;
 	PhysBody* Sensor_rebotblauE;
 	PhysBody* rebotblauLight;
-
+	PhysBody* Sensor_teleport;
 
 	SDL_Texture* flipperR_text;
 	SDL_Texture* flipperL_text;
@@ -55,6 +55,7 @@ public:
 	uint hitflipper_fx = 0;
 	uint bump_fx = 0;
 	uint pump_fx = 0;
+	uint tp_fx = 0;
 	p2Point<int> ray;
 	bool ray_on;
 
@@ -62,7 +63,7 @@ public:
 	int whiteFont = -1;
 	char scoreText[10] = { "\0" };
 
-
+	bool tp = false;
 
 	bool ball_in_game;
 
