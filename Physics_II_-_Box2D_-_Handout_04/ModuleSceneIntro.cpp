@@ -423,7 +423,7 @@ bool ModuleSceneIntro::Start()
 	Sensor_rebotblauD->listener = this;
 	Sensor_rebotblauE->listener = this;
 
-
+	App->physics->CreateBall();
 	lifes = 5;
 
 	return ret;
@@ -557,7 +557,7 @@ update_status ModuleSceneIntro::Update()
 		//restart with F2
 		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		{
-			App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
+			
 			Restart();
 
 		}
@@ -670,6 +670,7 @@ update_status ModuleSceneIntro::Update()
 	}
 	else 
 	{
+		Restart();
 		App->fade_to_black->FadeToBlack(this, App->lose_screen, 60);
 	}
 
@@ -735,13 +736,35 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 void ModuleSceneIntro::Restart()
 {
+	if (lifes > 1)
+	{
+		App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
+		App->physics->Ball = nullptr;
 
+		App->physics->Ball = App->physics->CreateCircle(500, 600, 10);
 
-	App->physics->Ball = nullptr;
-	App->physics->Ball = App->physics->CreateCircle(335, 600, 10);
+		ball_in_game = false;
+		dead = false;
+		lifes--;
+	}
+	else
+	{
+		App->physics->Ball = nullptr;
 
-	ball_in_game = false;
-	dead = false;
-	lifes--;
+		ball_in_game = false;
+		dead = false;
+		deadEnd = true;
+		lifes--;
+	}
+
 
 }
+//void ModuleSceneIntro::End()
+//{
+//	App->physics->Ball = nullptr;
+//
+//	ball_in_game = false;
+//	dead = false;
+//	deadEnd = true;
+//	lifes--;
+//}

@@ -48,7 +48,7 @@ bool ModulePhysics::Start()
 
 	b2Body* big_ball = world->CreateBody(&body);
 	CreateFlippers();
-	CreateBall();
+	
 	CreateTrigger();
 	//rTextFlip = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
 	//flipper_tx = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");

@@ -29,7 +29,7 @@ bool ModuleLoseScreen::Start()
 	loseText = App->textures->Load("Assets/Sprites/SceneLose.png");
 	// Load music
 	App->audio->PlayMusic("Assets/Audio/intro_music.ogg");
-
+	
 	bool ret = true;
 	return ret;
 }

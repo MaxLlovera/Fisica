@@ -18,7 +18,7 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 	void Restart();
-
+	void End();
 public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
@@ -58,7 +58,7 @@ public:
 	bool ball_in_game;
 
 	bool dead = false;
-	
+	bool deadEnd = false;
 	int score = 0;
 	int lifes;
 

@@ -28,7 +28,7 @@ bool ModuleInitialScene::Start()
 	introText = App->textures->Load("Assets/Sprites/inicial.png");
 	// Load music
 	App->audio->PlayMusic("Assets/Audio/intro_music.ogg");
-	
+	App->scene_intro->deadEnd = false;
 	bool ret = true;
 	return ret;
 }
