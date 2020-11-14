@@ -47,7 +47,8 @@ bool ModuleSceneIntro::Start()
 	hitflipper_fx = App->audio->LoadFx("Assets/Audio/fliphit.wav");
 	spoink_fx = App->audio->LoadFx("Assets/Audio/spoink.wav");
 	death_fx = App->audio->LoadFx("Assets/Audio/death.wav");
-
+	bump_fx = App->audio->LoadFx("Assets/Audio/bumphit.wav");
+	pump_fx = App->audio->LoadFx("Assets/Audio/pumphit.wav");
 
 	//trigger
 	ball_in_game = false;
@@ -691,6 +692,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
 			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
 			score += 30;
+			App->audio->PlayFx(pump_fx, 0);
 		}
 		if (bodyA == Sensor_Reb2)
 		{
@@ -700,7 +702,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
 			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
 			score += 30;
-
+			App->audio->PlayFx(pump_fx, 0);
 		}
 		if (bodyA == Sensor_Reb3)
 		{
@@ -710,18 +712,19 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
 			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.02f, -1.0f) , App->physics->Ball->body->GetLocalCenter(), true);
 			score += 30;
+			App->audio->PlayFx(pump_fx, 0);
 		}
 
 		if (bodyA == Sensor_rebotblauD)
 		{
 			App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.2f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
-
+			App->audio->PlayFx(bump_fx, 0);
 		}
 
 		if (bodyA == Sensor_rebotblauE)
 		{
 			App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.5f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
-
+			App->audio->PlayFx(bump_fx, 0);
 		}
 
 

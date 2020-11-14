@@ -52,6 +52,8 @@ public:
 	uint spoink_fx = 0;
 	uint death_fx = 0;
 	uint hitflipper_fx = 0;
+	uint bump_fx = 0;
+	uint pump_fx = 0;
 	p2Point<int> ray;
 	bool ray_on;
 
