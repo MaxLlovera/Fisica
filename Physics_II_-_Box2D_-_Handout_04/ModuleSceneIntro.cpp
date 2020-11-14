@@ -7,7 +7,8 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModuleInitialScene.h"
-
+#include "ModuleLoseScreen.h"
+#include "ModuleFadeToBlack.h"
 #include <stdio.h>
 #include <time.h>
 
@@ -29,12 +30,16 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
+	//LOAD TEXTURES
+	background = App->textures->Load("Assets/Sprites/background.png");
 	flipperL_text = App->textures->Load("Assets/Sprites/FlipperL.png");
 	flipperR_text = App->textures->Load("Assets/Sprites/FlipperR.png");
-
 	flipper_text = App->textures->Load("Assets/Sprites/crate.png");
 	Ball_tex = App->textures->Load("Assets/Sprites/ball.png");
 	Trigger_tex = App->textures->Load("Assets/Sprites/spoink.png");
+	Life_tex = App->textures->Load("Assets/Sprites/Lifes.png");
+
+	//LOAD AUDIOS/FX
 	if (this->IsEnabled() == true)
 	{
 		App->audio->PlayMusic("Assets/Audio/game_music.ogg");
@@ -42,9 +47,8 @@ bool ModuleSceneIntro::Start()
 	hitflipper_fx = App->audio->LoadFx("Assets/Audio/fliphit.wav");
 	spoink_fx = App->audio->LoadFx("Assets/Audio/spoink.wav");
 	death_fx = App->audio->LoadFx("Assets/Audio/death.wav");
-	//Backgound
-	background = App->textures->Load("Assets/Sprites/background.png");
-	
+
+
 	//trigger
 	ball_in_game = false;
 
@@ -444,192 +448,230 @@ update_status ModuleSceneIntro::Update()
 	//Draw background
 	App->renderer->Blit(background, 0, 40);
 	
-	
-	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+
+
+	if (lifes > 0)
 	{
-		ray_on = !ray_on;
-		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		App->physics->flipperJointL->SetMotorSpeed(30.0f);
-	}
-	else
-	{
-		App->physics->flipperJointL->SetMotorSpeed(-30.0f);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		App->physics->flipperJointR->SetMotorSpeed(-30.0f);
-	}
-	else
-	{
-		App->physics->flipperJointR->SetMotorSpeed(30.0f);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
-	{
-		App->audio->PlayFx(hitflipper_fx, 0);
-	}
-
-
-
-
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
-	{
-		App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10);
-	}
-
-
-	//Trigger
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP&&!ball_in_game)
-	{
-		int x, y;
-		App->physics->Ball->GetPosition(x, y);
-
-		if (y > 690) {
-			srand(time(NULL));
-			int random = rand() % 100;
-			if (random <= 33) {
-				App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.75f), App->physics->Ball->body->GetLocalCenter(), true);
-			}
-			else if(random <=66)
-			{
-				App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -2.5f), App->physics->Ball->body->GetLocalCenter(), true);
-			}
-			else
-			{
-				App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.95f), App->physics->Ball->body->GetLocalCenter(), true);
-
-			}
-			App->audio->PlayFx(spoink_fx, 0);
-			ball_in_game = true;
-		}
-	}
-
-
-	//restart with F2
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
-		App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
-		Restart();
-
-	}
-
-
-
-	// Prepare for raycast ------------------------------------------------------
-	
-	iPoint mouse;
-	mouse.x = App->input->GetMouseX();
-	mouse.y = App->input->GetMouseY();
-	int ray_hit = ray.DistanceTo(mouse);
-
-	fVector normal(0.0f, 0.0f);
-
-	// All draw functions ------------------------------------------------------
-	p2List_item<PhysBody*>* c = circles.getFirst();
-
-
-	//Draw Flipper Left
-	if (App->physics->flipperL != NULL)
-	{
-		int x, y;
-		App->physics->flipperL->GetPosition(x, y);
-		App->renderer->Blit(flipperL_text, x, y, NULL, 1.0f, App->physics->flipperL->GetRotation());
-	}
-
-	//Draw Flipper Right
-	if (App->physics->flipperR != NULL)
-	{
-		int x, y;
-		App->physics->flipperR->GetPosition(x, y);
-		App->renderer->Blit(flipperR_text, x, y, NULL, 1.0f, App->physics->flipperR->GetRotation());
-	}
-
-	//Draw Ball
-	if (App->physics->Ball != NULL&&Ball_tex != nullptr)
-	{
-		int x, y;
-		App->physics->Ball->GetPosition(x,y);
-		App->renderer->Blit(Ball_tex, x-3, y-3, NULL, 1.0f, App->physics->Ball->GetRotation());
-
-		if (y - 3 >= SCREEN_HEIGHT) {
-			App->audio->PlayFx(death_fx, 0);
-			Restart();
-			ball_in_game = false;
-
-		}
-
-
-	}
-
-	//Draw Trigger
-	if (App->physics->Trigger != NULL)
-	{
-		int x, y;
-		App->physics->Trigger->GetPosition(x, y);
-		App->renderer->Blit(Trigger_tex, x, y, NULL, 1.0f, App->physics->Trigger->GetRotation());
-	}
-
-
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		if(c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
-	c = boxes.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		if(ray_on)
+		if (lifes == 5)
 		{
-			int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-			if(hit >= 0)
-				ray_hit = hit;
+			App->renderer->Blit(Life_tex, 536, 0);
+			App->renderer->Blit(Life_tex, 496, 0);
+			App->renderer->Blit(Life_tex, 456, 0);
+			App->renderer->Blit(Life_tex, 416, 0);
+			App->renderer->Blit(Life_tex, 376, 0);
 		}
-		c = c->next;
+		else if (lifes == 4)
+		{
+			App->renderer->Blit(Life_tex, 536, 0);
+			App->renderer->Blit(Life_tex, 496, 0);
+			App->renderer->Blit(Life_tex, 456, 0);
+			App->renderer->Blit(Life_tex, 416, 0);
+		}
+		else if (lifes == 3)
+		{
+			App->renderer->Blit(Life_tex, 536, 0);
+			App->renderer->Blit(Life_tex, 496, 0);
+			App->renderer->Blit(Life_tex, 456, 0);
+		}
+		else if (lifes == 2)
+		{
+			App->renderer->Blit(Life_tex, 536, 0);
+			App->renderer->Blit(Life_tex, 496, 0);
+		}
+		else
+		{
+			App->renderer->Blit(Life_tex, 536, 0);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			ray_on = !ray_on;
+			ray.x = App->input->GetMouseX();
+			ray.y = App->input->GetMouseY();
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		{
+			App->physics->flipperJointL->SetMotorSpeed(30.0f);
+		}
+		else
+		{
+			App->physics->flipperJointL->SetMotorSpeed(-30.0f);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		{
+			App->physics->flipperJointR->SetMotorSpeed(-30.0f);
+		}
+		else
+		{
+			App->physics->flipperJointR->SetMotorSpeed(30.0f);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+		{
+			App->audio->PlayFx(hitflipper_fx, 0);
+		}
+
+
+
+
+		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		{
+			boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+		{
+			App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10);
+		}
+
+
+		//Trigger
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP && !ball_in_game)
+		{
+			int x, y;
+			App->physics->Ball->GetPosition(x, y);
+
+			if (y > 690) {
+				srand(time(NULL));
+				int random = rand() % 100;
+				if (random <= 33) {
+					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.75f), App->physics->Ball->body->GetLocalCenter(), true);
+				}
+				else if (random <= 66)
+				{
+					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -2.5f), App->physics->Ball->body->GetLocalCenter(), true);
+				}
+				else
+				{
+					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.95f), App->physics->Ball->body->GetLocalCenter(), true);
+
+				}
+				App->audio->PlayFx(spoink_fx, 0);
+				ball_in_game = true;
+			}
+		}
+
+
+		//restart with F2
+		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		{
+			App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
+			Restart();
+
+		}
+
+
+
+		// Prepare for raycast ------------------------------------------------------
+
+		iPoint mouse;
+		mouse.x = App->input->GetMouseX();
+		mouse.y = App->input->GetMouseY();
+		int ray_hit = ray.DistanceTo(mouse);
+
+		fVector normal(0.0f, 0.0f);
+
+		// All draw functions ------------------------------------------------------
+		p2List_item<PhysBody*>* c = circles.getFirst();
+
+
+		//Draw Flipper Left
+		if (App->physics->flipperL != NULL)
+		{
+			int x, y;
+			App->physics->flipperL->GetPosition(x, y);
+			App->renderer->Blit(flipperL_text, x, y, NULL, 1.0f, App->physics->flipperL->GetRotation());
+		}
+
+		//Draw Flipper Right
+		if (App->physics->flipperR != NULL)
+		{
+			int x, y;
+			App->physics->flipperR->GetPosition(x, y);
+			App->renderer->Blit(flipperR_text, x, y, NULL, 1.0f, App->physics->flipperR->GetRotation());
+		}
+
+		//Draw Ball
+		if (App->physics->Ball != NULL && Ball_tex != nullptr)
+		{
+			int x, y;
+			App->physics->Ball->GetPosition(x, y);
+			App->renderer->Blit(Ball_tex, x - 3, y - 3, NULL, 1.0f, App->physics->Ball->GetRotation());
+
+			if (y - 3 >= SCREEN_HEIGHT) {
+				App->audio->PlayFx(death_fx, 0);
+				Restart();
+				ball_in_game = false;
+
+			}
+
+
+		}
+
+		//Draw Trigger
+		if (App->physics->Trigger != NULL)
+		{
+			int x, y;
+			App->physics->Trigger->GetPosition(x, y);
+			App->renderer->Blit(Trigger_tex, x, y, NULL, 1.0f, App->physics->Trigger->GetRotation());
+		}
+
+
+
+		while (c != NULL)
+		{
+			int x, y;
+			c->data->GetPosition(x, y);
+			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
+				App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+			c = c->next;
+		}
+
+		c = boxes.getFirst();
+
+		while (c != NULL)
+		{
+			int x, y;
+			c->data->GetPosition(x, y);
+			App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
+			if (ray_on)
+			{
+				int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
+				if (hit >= 0)
+					ray_hit = hit;
+			}
+			c = c->next;
+		}
+
+		c = bckg.getFirst();
+
+		while (c != NULL)
+		{
+			int x, y;
+			c->data->GetPosition(x, y);
+			App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
+			c = c->next;
+		}
+
+		// ray -----------------
+		if (ray_on == true)
+		{
+			fVector destination(mouse.x - ray.x, mouse.y - ray.y);
+			destination.Normalize();
+			destination *= ray_hit;
+
+			App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
+
+			if (normal.x != 0.0f)
+				App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
+		}
 	}
-
-	c = bckg.getFirst();
-
-	while(c != NULL)
+	else 
 	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
+		App->fade_to_black->FadeToBlack(this, App->lose_screen, 60);
 	}
-
-	// ray -----------------
-	if(ray_on == true)
-	{
-		fVector destination(mouse.x-ray.x, mouse.y-ray.y);
-		destination.Normalize();
-		destination *= ray_hit;
-
-		App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
-
-		if(normal.x != 0.0f)
-			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-	}
-
 
 
 	return UPDATE_CONTINUE;
@@ -639,53 +681,54 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	
 
-	
-	if (bodyA == Sensor_Reb1)
+	if (lifes > 0)
 	{
-		//App->physics->Ball->body->IsFixedRotation();
-		//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
-		//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
-		//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
-		score += 30;
+		if (bodyA == Sensor_Reb1)
+		{
+			//App->physics->Ball->body->IsFixedRotation();
+			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
+			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
+			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
+			score += 30;
+		}
+		if (bodyA == Sensor_Reb2)
+		{
+			//App->physics->Ball->body->IsFixedRotation();
+
+			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
+			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
+			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
+			score += 30;
+
+		}
+		if (bodyA == Sensor_Reb3)
+		{
+			//App->physics->Ball->body->IsFixedRotation();
+
+			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
+			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
+			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.02f, -1.0f) , App->physics->Ball->body->GetLocalCenter(), true);
+			score += 30;
+		}
+
+		if (bodyA == Sensor_rebotblauD)
+		{
+			App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.2f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
+
+		}
+
+		if (bodyA == Sensor_rebotblauE)
+		{
+			App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.5f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
+
+		}
+
+
+		if (bodyA == rebotblauLight)
+		{
+
+		}
 	}
-	if (bodyA == Sensor_Reb2) 
-	{
-		//App->physics->Ball->body->IsFixedRotation();
-
-		//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
-		//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
-		//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
-		score += 30;
-
-	}
-	if (bodyA == Sensor_Reb3) 
-	{
-		//App->physics->Ball->body->IsFixedRotation();
-
-		//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
-		//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
-		//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.02f, -1.0f) , App->physics->Ball->body->GetLocalCenter(), true);
-		score += 30;
-	}
-
-	if (bodyA == Sensor_rebotblauD)
-	{
-		App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(-0.2f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
-
-	}	
-
-	if (bodyA == Sensor_rebotblauE)
-	{
-		App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.5f, -1.0f), App->physics->Ball->body->GetLocalCenter(), true);
-
-	}
-
-
-	if (bodyA == rebotblauLight)
-	{
-		
-	}
-
 
 }
 

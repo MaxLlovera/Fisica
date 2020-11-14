@@ -42,7 +42,7 @@ public:
 	SDL_Texture* flipper_text;
 	SDL_Texture* Ball_tex;
 	SDL_Texture* Trigger_tex;
-	
+	SDL_Texture* Life_tex;
 
 	SDL_Texture* background;
 	SDL_Texture* circle;

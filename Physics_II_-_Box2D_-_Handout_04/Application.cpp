@@ -10,7 +10,7 @@
 #include "ModuleFadeToBlack.h"
 #include "ModuleInitialScene.h"
 #include "ModuleSceneIntro.h"
-
+#include "ModuleLoseScreen.h"
 #include "Application.h"
 
 Application::Application()
@@ -24,6 +24,7 @@ Application::Application()
 	fade_to_black = new ModuleFadeToBlack(this);
 	initial_scene = new ModuleInitialScene(this);
 	scene_intro = new ModuleSceneIntro(this);
+	lose_screen = new ModuleLoseScreen(this);
 	physics = new ModulePhysics(this);
 
 	// The order of calls is very important!
@@ -41,6 +42,7 @@ Application::Application()
 	// Scenes
 	AddModule(initial_scene);
 	AddModule(scene_intro);
+	AddModule(lose_screen);
 	
 	// Player
 	AddModule(player);

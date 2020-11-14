@@ -13,6 +13,7 @@ class ModulePlayer;
 class ModuleFadeToBlack;
 class ModuleInitialScene;
 class ModuleSceneIntro;
+class ModuleLoseScreen;
 class ModulePhysics;
 
 class Application
@@ -27,6 +28,7 @@ public:
 	ModuleFadeToBlack* fade_to_black;
 	ModuleInitialScene* initial_scene;
 	ModuleSceneIntro* scene_intro;
+	ModuleLoseScreen* lose_screen;
 	ModulePhysics* physics;
 
 private:
