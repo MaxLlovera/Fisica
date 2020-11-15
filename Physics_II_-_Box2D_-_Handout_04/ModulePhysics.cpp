@@ -50,16 +50,6 @@ bool ModulePhysics::Start()
 	CreateFlippers();
 	
 	CreateTrigger(499, 855);
-	//rTextFlip = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
-	//flipper_tx = App->textures->Load("pinball/Textures/flippersAndTriangularBoundsFx.png");
-
-	
-	/*b2CircleShape shape;
-	shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
-
-	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	big_ball->CreateFixture(&fixture);*/
 
 	return true;
 }
@@ -266,7 +256,6 @@ PhysBody* ModulePhysics::CreateChainSensor(int x, int y, int* points, int size)
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.isSensor = true;
-	//fixture.density = 0.0f;
 	b->CreateFixture(&fixture);
 
 	delete p;
@@ -286,8 +275,6 @@ void ModulePhysics::CreateFlippers()
 	//ESQUERRA
 	flipperL = CreateRectangle(195, 815,65, 15);
 	axisL = CreateCircleStatic(170, 815, 2);
-	//App->renderer->Blit(App->scene_intro->box, 195, 815,NULL , 1.0f);
-
 	flipperJoint.bodyA = flipperL->body;
 	flipperJoint.bodyB = axisL->body;
 
@@ -299,7 +286,6 @@ void ModulePhysics::CreateFlippers()
 	flipperJoint.maxMotorTorque = 50.0f;
 	flipperJoint.motorSpeed = 0.0f;
 	flipperJoint.enableMotor = true;
-
 	flipperJointL = (b2RevoluteJoint*)world->CreateJoint(&flipperJoint);
 
 	//DRET
@@ -316,28 +302,18 @@ void ModulePhysics::CreateFlippers()
 	flipperJoint.maxMotorTorque = 50.0f;
 	flipperJoint.motorSpeed = 0.0f;
 	flipperJoint.enableMotor = true;
-
 	flipperJointR = (b2RevoluteJoint*)world->CreateJoint(&flipperJoint);
-
-
-
-
-
-	
-
 }
 
 void ModulePhysics::CreateBall()
 {
 	//BALL
-	//Ball = CreateCircle(100, 600, 10);
 	Ball = CreateCircle(500, 600, 10);
 }
 
 void ModulePhysics::CreateTrigger(int x,int y)
 {
 	//TRIGGER
-	//499 855
 	Trigger = CreateRectangleStatic(x, y, 30, 90);
 }
 

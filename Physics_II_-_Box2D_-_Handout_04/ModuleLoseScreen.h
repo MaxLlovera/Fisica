@@ -22,12 +22,9 @@ public:
 
 	bool CleanUp() override;
 
-
 private:
 	int whiteFont = -1;
 	char scoreText[10] = { "\0" };
 	SDL_Texture* loseText = nullptr;
-
-
 };
 

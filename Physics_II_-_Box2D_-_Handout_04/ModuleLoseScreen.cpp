@@ -30,7 +30,7 @@ bool ModuleLoseScreen::Start()
 	// L03: DONE: Load map
 	loseText = App->textures->Load("Assets/Sprites/SceneLose.png");
 	// Load music
-	App->audio->PlayMusic("Assets/Audio/intro_music.ogg");
+	App->audio->PlayMusic("Assets/Audio/GameOver.ogg");
 	char lookupTable[] = { "0123456789.,&!'-©abcdefghijklmnopqrstuvwxyz.    " };
 	whiteFont = App->fonts->Load("Assets/Sprites/whiteFont.png", lookupTable, 3);
 	bool ret = true;
@@ -62,6 +62,8 @@ update_status ModuleLoseScreen::PostUpdate()
 bool ModuleLoseScreen::CleanUp()
 {
 	App->textures->Unload(loseText);
+
+	App->fonts->UnLoad(whiteFont);
 	this->Disable();
 	return true;
 }

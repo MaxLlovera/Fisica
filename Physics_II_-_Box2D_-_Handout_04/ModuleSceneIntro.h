@@ -14,15 +14,15 @@ public:
 
 	bool Start();
 	update_status Update();
-	//update_status PostUpdate();
+
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void Teleport();
 	void Restart();
 
 public:
-	p2List<PhysBody*> circles;
-	p2List<PhysBody*> boxes;
+	//p2List<PhysBody*> circles;
+	//p2List<PhysBody*> boxes;
 	p2List<PhysBody*> bckg;
 
 	
@@ -40,7 +40,6 @@ public:
 	SDL_Texture* flipperR_text;
 	SDL_Texture* flipperL_text;
 
-	SDL_Texture* flipper_text;
 	SDL_Texture* Ball_tex;
 	SDL_Texture* Trigger_tex;
 	SDL_Texture* Life_tex;
@@ -49,9 +48,9 @@ public:
 	SDL_Texture* light_ball;
 
 	SDL_Texture* background;
-	SDL_Texture* circle;
-	SDL_Texture* box;
-	SDL_Texture* rick;
+	//SDL_Texture* circle;
+	//SDL_Texture* box;
+	//SDL_Texture* rick;
 	uint bonus_fx = 0;
 	uint spoink_fx = 0;
 	uint death_fx = 0;
@@ -60,6 +59,7 @@ public:
 	uint pump_fx = 0;
 	uint none = 0;
 	uint tp_fx = 0;
+
 	p2Point<int> ray;
 	bool ray_on;
 
@@ -68,7 +68,7 @@ public:
 	int whiteFont = -1;
 	char scoreText[10] = { "\0" };
 
-	bool tp = false;
+	//bool tp = false;
 
 	//Lights
 	bool iluminarDret = false;

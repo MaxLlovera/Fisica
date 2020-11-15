@@ -15,7 +15,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	circle = box = rick = NULL;
+	//circle = box = rick = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -35,7 +35,6 @@ bool ModuleSceneIntro::Start()
 	background = App->textures->Load("Assets/Sprites/background.png");
 	flipperL_text = App->textures->Load("Assets/Sprites/FlipperL.png");
 	flipperR_text = App->textures->Load("Assets/Sprites/FlipperR.png");
-	flipper_text = App->textures->Load("Assets/Sprites/crate.png");
 	Ball_tex = App->textures->Load("Assets/Sprites/ball.png");
 	Trigger_tex = App->textures->Load("Assets/Sprites/spoink.png");
 	Life_tex = App->textures->Load("Assets/Sprites/Lifes.png");
@@ -497,6 +496,17 @@ bool ModuleSceneIntro::CleanUp()
 	App->physics->Ball = nullptr;
 	Ball_tex = nullptr;
 
+	App->fonts->UnLoad(whiteFont);
+
+	App->textures->Unload(background);
+	App->textures->Unload(flipperL_text);
+	App->textures->Unload(flipperR_text);
+	App->textures->Unload(Ball_tex);
+	App->textures->Unload(Trigger_tex);
+	App->textures->Unload(Life_tex);
+	App->textures->Unload(light_bouncerL);
+	App->textures->Unload(light_bouncerR);
+	App->textures->Unload(light_ball);
 
 	return true;
 }
@@ -573,18 +583,16 @@ update_status ModuleSceneIntro::Update()
 		}
 
 
+		//if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		//{
+		//	boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
 
+		//}
 
-		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		{
-			boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
-
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
-		{
-			App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10);
-		}
+		//if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+		//{
+		//	App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10);
+		//}
 
 
 		//Trigger
@@ -597,18 +605,12 @@ update_status ModuleSceneIntro::Update()
 				srand(time(NULL));
 				int random = rand() % 100;
 				if (random <= 50) {
-					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -1.95f), App->physics->Ball->body->GetLocalCenter(), true);
+					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -2.05f), App->physics->Ball->body->GetLocalCenter(), true);
 				}
-				else //if (random <= 66)
+				else
 				{
 					App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -2.5f), App->physics->Ball->body->GetLocalCenter(), true);
 				}
-				//else
-				//{
-				//	App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, -2.7f), App->physics->Ball->body->GetLocalCenter(), true);
-
-				//}
-
 				App->audio->PlayFx(spoink_fx, 0);
 				ball_in_game = true;
 			}
@@ -627,12 +629,6 @@ update_status ModuleSceneIntro::Update()
 				App->physics->CreateTrigger(499, 860);
 				count++;
 			}
-			//if (count == 1)
-			//{
-			//	App->physics->Trigger->body->GetWorld()->DestroyBody(App->physics->Trigger->body);
-			//	App->physics->CreateTrigger(499, 870);
-			//	count++;
-			//}
 			if (count == 1)
 			{
 				App->physics->Trigger->body->GetWorld()->DestroyBody(App->physics->Trigger->body);
@@ -649,8 +645,6 @@ update_status ModuleSceneIntro::Update()
 			Restart();
 		}
 
-
-
 		// Prepare for raycast ------------------------------------------------------
 
 		iPoint mouse;
@@ -661,7 +655,7 @@ update_status ModuleSceneIntro::Update()
 		fVector normal(0.0f, 0.0f);
 
 		// All draw functions ------------------------------------------------------
-		p2List_item<PhysBody*>* c = circles.getFirst();
+		//p2List_item<PhysBody*>* c = circles.getFirst();
 
 
 		//Draw Flipper Left
@@ -705,42 +699,40 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->Blit(Trigger_tex, x, y, NULL, 1.0f, App->physics->Trigger->GetRotation());
 		}
 
+		//while (c != NULL)
+		//{
+		//	int x, y;
+		//	c->data->GetPosition(x, y);
+		//	if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
+		//		App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+		//	c = c->next;
+		//}
 
+		//c = boxes.getFirst();
 
-		while (c != NULL)
-		{
-			int x, y;
-			c->data->GetPosition(x, y);
-			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-				App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-			c = c->next;
-		}
+		//while (c != NULL)
+		//{
+		//	int x, y;
+		//	c->data->GetPosition(x, y);
+		//	App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
+		//	if (ray_on)
+		//	{
+		//		int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
+		//		if (hit >= 0)
+		//			ray_hit = hit;
+		//	}
+		//	c = c->next;
+		//}
 
-		c = boxes.getFirst();
+		//c = bckg.getFirst();
 
-		while (c != NULL)
-		{
-			int x, y;
-			c->data->GetPosition(x, y);
-			App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-			if (ray_on)
-			{
-				int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-				if (hit >= 0)
-					ray_hit = hit;
-			}
-			c = c->next;
-		}
-
-		c = bckg.getFirst();
-
-		while (c != NULL)
-		{
-			int x, y;
-			c->data->GetPosition(x, y);
-			App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-			c = c->next;
-		}
+		//while (c != NULL)
+		//{
+		//	int x, y;
+		//	c->data->GetPosition(x, y);
+		//	App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
+		//	c = c->next;
+		//}
 
 		// ray -----------------
 		if (ray_on == true)
@@ -754,10 +746,13 @@ update_status ModuleSceneIntro::Update()
 			if (normal.x != 0.0f)
 				App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 		}
+
+		//teleport
 		if (App->physics->Ball != nullptr)
 		{
 			Teleport();
 		}
+
 		//Bounce Light
 		if (iluminarDret)
 		{
@@ -793,6 +788,7 @@ update_status ModuleSceneIntro::Update()
 		App->fade_to_black->FadeToBlack(this, App->lose_screen, 60);
 	}
 
+	//score
 	sprintf_s(scoreText, 10, "%d", score);
 	if (score < 10) {
 		App->fonts->BlitText(240, 16, whiteFont, scoreText);
@@ -914,7 +910,6 @@ void ModuleSceneIntro::Restart()
 		App->physics->Ball->body->GetWorld()->DestroyBody(App->physics->Ball->body);
 		App->physics->Ball = nullptr;
 		App->physics->Ball = App->physics->CreateCircle(500, 600, 10);
-		//App->physics->Ball = App->physics->CreateCircle(250, 310, 10);
 		ball_in_game = false;
 		dead = false;
 		lifes--;
@@ -922,7 +917,6 @@ void ModuleSceneIntro::Restart()
 	else
 	{
 		App->physics->Ball = nullptr;
-
 		ball_in_game = false;
 		dead = false;
 		deadEnd = true;
