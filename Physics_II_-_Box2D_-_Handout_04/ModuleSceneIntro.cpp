@@ -485,6 +485,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateBall();
 	lifes = 5;
 	score = 0;
+	countComb = 0;
 	return ret;
 }
 
@@ -841,11 +842,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 		if (bodyA == Sensor_Reb2)
 		{
-			//App->physics->Ball->body->IsFixedRotation();
 
-			//App->physics->Ball->body->ApplyLinearImpulse(b2Vec2(0.0f, 1.1f), App->physics->Ball->body->GetLocalCenter(), true);
-			//bodyA->body->ApplyLinearImpulse({ -0.02f,-2.0F }, bodyA->body->GetLocalCenter(), true);
-			//App->physics->Ball->body->ApplyLinearImpulse({ -0.02f,-2.0F }, App->physics->Ball->body->GetLocalCenter(), true);
 			iluminacioBola2 = true;
 			if (App->audio->playing == false)
 				score += 30;
@@ -900,6 +897,12 @@ void ModuleSceneIntro::Teleport()
 			App->audio->PlayFx(tp_fx, 0);
 			score += 50;
 			App->physics->Ball = App->physics->CreateCircle(49, 100, 10);
+			countComb++;
+			if (countComb == 3)
+			{
+				score += 5000;
+			}
+
 		}
 	}
 }
@@ -928,12 +931,3 @@ void ModuleSceneIntro::Restart()
 
 
 }
-//void ModuleSceneIntro::End()
-//{
-//	App->physics->Ball = nullptr;
-//
-//	ball_in_game = false;
-//	dead = false;
-//	deadEnd = true;
-//	lifes--;
-//}

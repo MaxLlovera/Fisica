@@ -64,11 +64,13 @@ public:
 	bool ray_on;
 
 	uint score = 000;
+	uint HighScore;
 	int whiteFont = -1;
 	char scoreText[10] = { "\0" };
 
 	bool tp = false;
 
+	//Lights
 	bool iluminarDret = false;
 	bool iluminarEsquerra = false;
 	bool iluminacioBola1 = false;
@@ -82,5 +84,7 @@ public:
 	bool deadEnd = false;
 
 	int lifes;
+
+	int countComb;
 
 };
