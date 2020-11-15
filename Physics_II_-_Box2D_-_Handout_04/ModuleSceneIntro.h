@@ -65,10 +65,12 @@ public:
 
 	uint score = 000;
 	uint HighScore;
+	uint LastScore;
+	uint FinalLastScore;
+	
 	int whiteFont = -1;
 	char scoreText[10] = { "\0" };
 
-	//bool tp = false;
 
 	//Lights
 	bool iluminarDret = false;

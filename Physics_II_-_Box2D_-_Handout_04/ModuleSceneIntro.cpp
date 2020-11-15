@@ -485,6 +485,7 @@ bool ModuleSceneIntro::Start()
 	lifes = 5;
 	score = 0;
 	countComb = 0;
+	LastScore = 0;
 	return ret;
 }
 
@@ -784,8 +785,15 @@ update_status ModuleSceneIntro::Update()
 	}
 	else 
 	{
+		if (score > HighScore)
+		{
+			HighScore = score;
+		}
+
+		FinalLastScore = LastScore;
 		Restart();
 		App->fade_to_black->FadeToBlack(this, App->lose_screen, 60);
+
 	}
 
 	//score
@@ -913,6 +921,9 @@ void ModuleSceneIntro::Restart()
 		ball_in_game = false;
 		dead = false;
 		lifes--;
+		LastScore = LastScore + score;
+		
+		
 	}
 	else
 	{
@@ -921,6 +932,8 @@ void ModuleSceneIntro::Restart()
 		dead = false;
 		deadEnd = true;
 		lifes--;
+		LastScore = LastScore + score;
+		
 	}
 
 
