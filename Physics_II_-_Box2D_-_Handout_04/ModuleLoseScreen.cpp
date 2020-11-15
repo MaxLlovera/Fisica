@@ -56,6 +56,7 @@ update_status ModuleLoseScreen::PostUpdate()
 	bool ret = true;
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
+
 	return UPDATE_CONTINUE;
 }
 

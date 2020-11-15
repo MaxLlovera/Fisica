@@ -21,8 +21,6 @@ public:
 	void Restart();
 
 public:
-	//p2List<PhysBody*> circles;
-	//p2List<PhysBody*> boxes;
 	p2List<PhysBody*> bckg;
 
 	
@@ -37,20 +35,20 @@ public:
 	PhysBody* rebotblauLight;
 	PhysBody* Sensor_Audio;
 
+	//Flippers
 	SDL_Texture* flipperR_text;
 	SDL_Texture* flipperL_text;
 
+	//Textures
 	SDL_Texture* Ball_tex;
 	SDL_Texture* Trigger_tex;
 	SDL_Texture* Life_tex;
 	SDL_Texture* light_bouncerR;
 	SDL_Texture* light_bouncerL;
 	SDL_Texture* light_ball;
-
 	SDL_Texture* background;
-	//SDL_Texture* circle;
-	//SDL_Texture* box;
-	//SDL_Texture* rick;
+
+	//Audio
 	uint bonus_fx = 0;
 	uint spoink_fx = 0;
 	uint death_fx = 0;
@@ -60,13 +58,16 @@ public:
 	uint none = 0;
 	uint tp_fx = 0;
 
+	//Ray
 	p2Point<int> ray;
 	bool ray_on;
 
+	//Score
 	uint score = 000;
 	uint HighScore = 000;
 
 	
+	//Fonts
 	int whiteFont = -1;
 	char scoreText[10] = { "\0" };
 	char highScoreText[10] = { "\0" };
@@ -81,6 +82,7 @@ public:
 	int count = 0;
 	bool ball_in_game;
 
+	//Dead
 	bool dead = false;
 	bool deadEnd = false;
 

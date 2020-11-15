@@ -582,19 +582,6 @@ update_status ModuleSceneIntro::Update()
 			App->audio->PlayFx(hitflipper_fx, 0);
 		}
 
-
-		//if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		//{
-		//	boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
-
-		//}
-
-		//if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
-		//{
-		//	App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10);
-		//}
-
-
 		//Trigger
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP && !ball_in_game)
 		{
@@ -654,10 +641,6 @@ update_status ModuleSceneIntro::Update()
 
 		fVector normal(0.0f, 0.0f);
 
-		// All draw functions ------------------------------------------------------
-		//p2List_item<PhysBody*>* c = circles.getFirst();
-
-
 		//Draw Flipper Left
 		if (App->physics->flipperL != NULL)
 		{
@@ -699,40 +682,6 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->Blit(Trigger_tex, x, y, NULL, 1.0f, App->physics->Trigger->GetRotation());
 		}
 
-		//while (c != NULL)
-		//{
-		//	int x, y;
-		//	c->data->GetPosition(x, y);
-		//	if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-		//		App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-		//	c = c->next;
-		//}
-
-		//c = boxes.getFirst();
-
-		//while (c != NULL)
-		//{
-		//	int x, y;
-		//	c->data->GetPosition(x, y);
-		//	App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		//	if (ray_on)
-		//	{
-		//		int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-		//		if (hit >= 0)
-		//			ray_hit = hit;
-		//	}
-		//	c = c->next;
-		//}
-
-		//c = bckg.getFirst();
-
-		//while (c != NULL)
-		//{
-		//	int x, y;
-		//	c->data->GetPosition(x, y);
-		//	App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		//	c = c->next;
-		//}
 
 		// ray -----------------
 		if (ray_on == true)
@@ -746,9 +695,9 @@ update_status ModuleSceneIntro::Update()
 			if (normal.x != 0.0f)
 				App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 		}
-
+		
 		//teleport
-		if (App->physics->Ball != nullptr)
+		if (App->physics->Ball != nullptr&& App->physics->body_clicked == nullptr)
 		{
 			Teleport();
 		}
@@ -920,7 +869,7 @@ void ModuleSceneIntro::Restart()
 		ball_in_game = false;
 		dead = false;
 		lifes--;	
-		
+		countComb = 0;
 	}
 	else
 	{
@@ -929,8 +878,8 @@ void ModuleSceneIntro::Restart()
 		dead = false;
 		deadEnd = true;
 		lifes--;
+		countComb = 0;
 	
 	}
-
-
 }
+
