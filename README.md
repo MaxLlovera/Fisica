@@ -24,11 +24,19 @@ LEFT CLICK-> Mouse joint
 ->50 points for using teleport
 ->5000 combo points for using teleport 3 times
 
+#Original Game
+We adapted our game based on Pokemon Pinball Red: https://www.youtube.com/watch?v=Rs-vOi7EiAw
+
+We only used this game background for our game, and the rest is done by us.
+
+
 ## Developers
  - Max Llovera Martí - Programmer and Designer
  - Arnau Ustrell Vacas - Programmer and Designer
 
-## License
+## Github repository
+https://github.com/MaxLlovera/Fisica
 
+## License
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 

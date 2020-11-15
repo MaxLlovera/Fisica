@@ -64,13 +64,12 @@ public:
 	bool ray_on;
 
 	uint score = 000;
-	uint HighScore;
-	uint LastScore;
-	uint FinalLastScore;
+	uint HighScore = 000;
+
 	
 	int whiteFont = -1;
 	char scoreText[10] = { "\0" };
-
+	char highScoreText[10] = { "\0" };
 
 	//Lights
 	bool iluminarDret = false;

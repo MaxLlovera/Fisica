@@ -485,7 +485,6 @@ bool ModuleSceneIntro::Start()
 	lifes = 5;
 	score = 0;
 	countComb = 0;
-	LastScore = 0;
 	return ret;
 }
 
@@ -785,12 +784,12 @@ update_status ModuleSceneIntro::Update()
 	}
 	else 
 	{
-		if (score > HighScore)
+		if (score >= HighScore)
 		{
 			HighScore = score;
+			sprintf_s(highScoreText, 10, "%d", HighScore);
 		}
 
-		FinalLastScore = LastScore;
 		Restart();
 		App->fade_to_black->FadeToBlack(this, App->lose_screen, 60);
 
@@ -920,9 +919,7 @@ void ModuleSceneIntro::Restart()
 		App->physics->Ball = App->physics->CreateCircle(500, 600, 10);
 		ball_in_game = false;
 		dead = false;
-		lifes--;
-		LastScore = LastScore + score;
-		
+		lifes--;	
 		
 	}
 	else
@@ -932,8 +929,7 @@ void ModuleSceneIntro::Restart()
 		dead = false;
 		deadEnd = true;
 		lifes--;
-		LastScore = LastScore + score;
-		
+	
 	}
 
 

@@ -25,6 +25,9 @@ public:
 
 private:
 
+	int whiteFont = -1;
+	char lastScoreText[10] = { "\0" };
+	char hightScoreText[10] = { "\0" };
 	SDL_Texture* introText = nullptr;
 
 
