@@ -1,10 +1,10 @@
 # PINBALL GAME
 
 ## Description
-This is a Pinball game created with Box2D for the subject of Physics at 
-"Universitat Politècnica de Catalunya".
-In this Pinball game you have to reach the maximum score points you can, 
-if you lose the 5 lifes you have, you lose.
+This is a Pinball game created with Box2D for the subject of Physics at CITM-UPC
+"Centre de la Imatge i la Tecnologia Multimèdia - Universitat Politècnica de Catalunya".
+In this Pinball game you have to reach the maximum score points, 
+if you die 5 times, you lose.
 
 
 ## Controls
@@ -14,7 +14,7 @@ Down arrow -> Launching the ball.
 
 ## Debug Features
 F1-> See all the bodies
-LEFT CLICK-> Mouse joint
+LEFT CLICK (when F1 is pressed) -> Mouse joint
 
 ## Key Features
 -Title Screen(press ENTER to start)
